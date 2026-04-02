@@ -67,9 +67,10 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "";
         const [playersRes, teamRes] = await Promise.all([
-          fetch("http://localhost:5001/api/players"),
-          fetch("http://localhost:5001/api/team"),
+          fetch(`${API_BASE_URL}/api/players`),
+          fetch(`${API_BASE_URL}/api/team`),
         ]);
         
         const playersRaw = await playersRes.json();

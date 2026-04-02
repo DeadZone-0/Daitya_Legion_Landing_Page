@@ -21,7 +21,8 @@ const AdminDashboard = () => {
     // Fetch from backend, mocked for now if backend is down
     const fetchPlayers = async () => {
       try {
-        const res = await fetch("/api/players");
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+        const res = await fetch(`${API_BASE_URL}/api/players`);
         const data = await res.json();
         setPlayers(data);
       } catch (err) {
@@ -69,7 +70,8 @@ const AdminDashboard = () => {
     if (imageFile) payload.append("image", imageFile);
 
     try {
-      const res = await fetch('/api/players', {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+      const res = await fetch(`${API_BASE_URL}/api/players`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

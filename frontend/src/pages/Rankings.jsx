@@ -69,7 +69,8 @@ const Rankings = () => {
   const [activeTab, setActiveTab] = useState("batting");
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/players")
+    const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+    fetch(`${API_BASE_URL}/api/players`)
       .then((res) => {
         if (!res.ok) throw new Error(`API Error: ${res.status}`);
         return res.json();
