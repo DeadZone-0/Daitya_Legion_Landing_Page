@@ -1,0 +1,123 @@
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+Connected to DB
+Found 20 players:
+- Bruce Wayne (ID: 1)
+  Runs: 403, Wickets: 42
+  Batting: AVG 15.5, SR 82.92
+  Bowling: ECON 4.67, WKTS 42
+  Recent Form Count: 0
+-------------------
+- Vikram Singh (ID: 3)
+  Runs: 120, Wickets: 45
+  Batting: AVG 8.5, SR 90
+  Bowling: ECON 5.2, WKTS 45
+  Recent Form Count: 0
+-------------------
+- Bruce Wayne (ID: 41997128)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Aaditya Singh (ID: 35975644)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Aarav (ID: 41746818)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Aditya Jethuri (ID: 37939587)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Akshit Bisht (ID: 45646975)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Ansh! (ID: 41232063)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Anuj Negi (ID: 24544263)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Arman Rawat (ID: 43538013)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Aryan Singh (ID: 33228481)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Deepak Kothiyal (ID: 41646508)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Gaurav Kothiyal (ID: 35127006)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Karan (ID: 43490609)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Maithani Ashraya (ID: 32875462)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Piyush (ID: 41786450)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Pranjal Rawat (ID: 41776675)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Sagar Pathak (ID: 41644117)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Sakshm (ID: 43609842)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------
+- Vaibhav (ID: 41644162)
+  Runs: 0, Wickets: 0
+  Batting: AVG 0, SR 0
+  Bowling: ECON 0, WKTS 0
+  Recent Form Count: 0
+-------------------

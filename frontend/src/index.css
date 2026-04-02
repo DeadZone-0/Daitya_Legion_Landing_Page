@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #9d4edd;
+  --color-primary-glow: rgba(157, 78, 221, 0.4);
+  --color-secondary: #3c096c;
+  --color-accent: #e0aaff;
+  --color-bg-dark: #10002b;
+  --color-bg-darker: #080017;
+  --color-text-main: #f8f9fa;
+  --color-text-muted: #adb5bd;
+  --color-gold: #ffb703;
+  --color-gold-glow: rgba(255, 183, 3, 0.3);
+  --color-red-deep: #ef233c;
+  --color-red-glow: rgba(239, 35, 60, 0.3);
+  
+  --shadow-premium: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px var(--color-primary-glow);
+}
+
+@layer base {
+  body {
+    @apply min-h-screen m-0 overflow-x-hidden text-text-main selection:bg-primary selection:text-white;
+    background: radial-gradient(circle at 50% 0%, var(--color-secondary), var(--color-bg-darker));
+    background-attachment: fixed;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-black;
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-premium transition-all duration-300;
+  }
+  
+  .glass-panel:hover {
+    @apply border-white/20 bg-white/10;
+  }
+
+  .glow-text-primary {
+    @apply transition-all duration-300;
+    text-shadow: 0 0 10px var(--color-primary-glow);
+  }
+
+  .btn-premium {
+    @apply relative px-8 py-3 rounded-full font-bold overflow-hidden transition-all duration-300 active:scale-95;
+    background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-premium:hover {
+    @apply shadow-glow -translate-y-1;
+    background: linear-gradient(45deg, var(--color-accent), var(--color-primary));
+    color: var(--color-bg-darker);
+  }
+
+
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/50;
+  }
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .rotateY-180 {
+    transform: rotateY(180deg);
+  }
+}
