@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config.js";
 import PlayerCard from "../components/PlayerCard.jsx";
 
 /* ─────────────────────────────────────────────
@@ -787,10 +788,11 @@ const AdminDashboard = () => {
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
 
-  const navigate = useNavigate();
-  const API_BASE_URL = "https://daitya-legion-api-264.onrender.com";
+  const [matches, setMatches] = useState([]);
   const token =
     typeof window !== "undefined" ? localStorage.getItem("adminToken") : "";
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const t = localStorage.getItem("adminToken");

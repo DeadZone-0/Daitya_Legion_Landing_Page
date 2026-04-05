@@ -19,7 +19,8 @@ const Player = mongoose.model('Player', PlayerSchema);
 
 async function run() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const uri = "mongodb+srv://nooneisusingthismail_db_user:cMHPAJMlm863rVKL@cluster0.nemhgne.mongodb.net/daitya";
+    await mongoose.connect(uri);
     console.log('Connected to MongoDB');
 
     // Find Sakshm or Saksham

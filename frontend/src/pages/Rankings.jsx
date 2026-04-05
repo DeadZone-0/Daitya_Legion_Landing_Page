@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Crosshair, Shield, Target, Waves, Zap } from "lucide-react";
+import { Crosshair, Shield, Target, Waves, Zap, Award, Crown, TrendingUp, Search, Filter } from "lucide-react";
+import { API_BASE_URL } from "../config.js";
 import { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar.jsx";
 
@@ -69,7 +70,6 @@ const Rankings = () => {
   const [activeTab, setActiveTab] = useState("batting");
 
   useEffect(() => {
-    const API_BASE_URL = "https://daitya-legion-api-264.onrender.com";
     fetch(`${API_BASE_URL}/api/players`)
       .then((res) => {
         if (!res.ok) throw new Error(`API Error: ${res.status}`);

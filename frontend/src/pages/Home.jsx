@@ -16,6 +16,7 @@ import Hero from "../components/Hero.jsx";
 import Navbar from "../components/Navbar.jsx";
 import PlayerCard from "../components/PlayerCard.jsx";
 import ViceCaptainSection from "../components/ViceCaptainSection.jsx";
+import { API_BASE_URL } from "../config.js";
 
 const Counter = ({ value, title, icon: Icon, color }) => {
   const countRef = useRef(null);
@@ -64,7 +65,6 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_BASE_URL = "https://daitya-legion-api-264.onrender.com";
         const [playersRes, teamRes] = await Promise.all([
           fetch(`${API_BASE_URL}/api/players`),
           fetch(`${API_BASE_URL}/api/team`),

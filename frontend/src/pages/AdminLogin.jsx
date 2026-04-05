@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Lock, Shield, Terminal, Activity, Zap } from 'lucide-react';
+import { AnimatePresence, motion } from "framer-motion";
+import { Activity, Lock, Shield, Terminal, Zap } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config.js";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +17,6 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_URL || "";
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

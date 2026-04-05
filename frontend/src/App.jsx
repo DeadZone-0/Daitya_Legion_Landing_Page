@@ -6,6 +6,7 @@ import AdminLogin from './pages/AdminLogin.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import BatarangEffect from './components/BatarangEffect.jsx';
 import EntryGate from './components/EntryGate.jsx';
+import { Analytics } from '@vercel/analytics/react';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('adminToken');
@@ -42,6 +43,7 @@ function App() {
           </Routes>
         </div>
       </BatarangEffect>
+      <Analytics />
     </Router>
   );
 }
