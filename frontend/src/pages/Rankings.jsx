@@ -69,7 +69,7 @@ const Rankings = () => {
   const [activeTab, setActiveTab] = useState("batting");
 
   useEffect(() => {
-    const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+    const API_BASE_URL = "https://daitya-legion-api-264.onrender.com";
     fetch(`${API_BASE_URL}/api/players`)
       .then((res) => {
         if (!res.ok) throw new Error(`API Error: ${res.status}`);
@@ -139,7 +139,12 @@ const Rankings = () => {
   const tabs = [
     { id: "batting", label: "BATTING", icon: Zap, color: "text-primary" },
     { id: "bowling", label: "BOWLING", icon: Target, color: "text-red-700" },
-    { id: "allrounder", label: "ALL-ROUNDERS", icon: Shield, color: "text-gray-400" },
+    {
+      id: "allrounder",
+      label: "ALL-ROUNDERS",
+      icon: Shield,
+      color: "text-gray-400",
+    },
     { id: "fielding", label: "FIELDING", icon: Waves, color: "text-red-900" },
   ];
 
@@ -232,118 +237,118 @@ const Rankings = () => {
             </div>
           ) : (
             <AnimatePresence mode="wait">
-            {activeTab === "batting" && (
-              <motion.div
-                key="batting"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="space-y-4"
-              >
-                {rankedData.batting.map((item, i) => (
-                  <RankingCard
-                    key={item.p.external_id}
-                    rank={i}
-                    player={item.p}
-                    value={item.score}
-                    label="Batting Rating"
-                    color="text-primary"
-                  />
-                ))}
-              </motion.div>
-            )}
-            {activeTab === "bowling" && (
-              <motion.div
-                key="bowling"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="space-y-4"
-              >
-                {rankedData.bowling.map((item, i) => (
-                  <RankingCard
-                    key={item.p.external_id}
-                    rank={i}
-                    player={item.p}
-                    value={item.score}
-                    label="Bowling Rating"
-                    color="text-red-700"
-                  />
-                ))}
-              </motion.div>
-            )}
-            {activeTab === "allrounder" && (
-              <motion.div
-                key="allrounder"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="space-y-4"
-              >
-                {rankedData.allrounder.map((item, i) => (
-                  <RankingCard
-                    key={item.p.external_id}
-                    rank={i}
-                    player={item.p}
-                    value={item.score}
-                    label="All-Round Rating"
-                    color="text-gray-400"
-                  />
-                ))}
-              </motion.div>
-            )}
-            {activeTab === "fielding" && (
-              <motion.div
-                key="fielding"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-12"
-              >
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3 mb-8 border-l-4 border-primary pl-6">
-                    <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter text-center md:text-left">
-                      Catches <br />
-                      <span className="text-[10px] tracking-[0.4em] not-italic text-gray-700 font-black">
-                        Best Fielders
-                      </span>
-                    </h3>
-                  </div>
-                  {rankedData.catches.map((p, i) => (
+              {activeTab === "batting" && (
+                <motion.div
+                  key="batting"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-4"
+                >
+                  {rankedData.batting.map((item, i) => (
                     <RankingCard
-                      key={p.external_id}
+                      key={item.p.external_id}
                       rank={i}
-                      player={p}
-                      value={p.catches || 0}
-                      label="Catches"
+                      player={item.p}
+                      value={item.score}
+                      label="Batting Rating"
                       color="text-primary"
                     />
                   ))}
-                </div>
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3 mb-8 border-l-4 border-red-950 pl-6 text-center sm:text-right w-full sm:w-auto justify-end md:text-left md:justify-start">
-                    <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter text-center md:text-left">
-                      Run Outs <br />
-                      <span className="text-[10px] tracking-[0.4em] not-italic text-gray-700 font-black">
-                        Run Out Specialists
-                      </span>
-                    </h3>
-                  </div>
-                  {rankedData.runouts.map((p, i) => (
+                </motion.div>
+              )}
+              {activeTab === "bowling" && (
+                <motion.div
+                  key="bowling"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-4"
+                >
+                  {rankedData.bowling.map((item, i) => (
                     <RankingCard
-                      key={p.external_id}
+                      key={item.p.external_id}
                       rank={i}
-                      player={p}
-                      value={p.run_outs || 0}
-                      label="Run Outs"
-                      color="text-red-900"
+                      player={item.p}
+                      value={item.score}
+                      label="Bowling Rating"
+                      color="text-red-700"
                     />
                   ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
+                </motion.div>
+              )}
+              {activeTab === "allrounder" && (
+                <motion.div
+                  key="allrounder"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="space-y-4"
+                >
+                  {rankedData.allrounder.map((item, i) => (
+                    <RankingCard
+                      key={item.p.external_id}
+                      rank={i}
+                      player={item.p}
+                      value={item.score}
+                      label="All-Round Rating"
+                      color="text-gray-400"
+                    />
+                  ))}
+                </motion.div>
+              )}
+              {activeTab === "fielding" && (
+                <motion.div
+                  key="fielding"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-12"
+                >
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3 mb-8 border-l-4 border-primary pl-6">
+                      <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter text-center md:text-left">
+                        Catches <br />
+                        <span className="text-[10px] tracking-[0.4em] not-italic text-gray-700 font-black">
+                          Best Fielders
+                        </span>
+                      </h3>
+                    </div>
+                    {rankedData.catches.map((p, i) => (
+                      <RankingCard
+                        key={p.external_id}
+                        rank={i}
+                        player={p}
+                        value={p.catches || 0}
+                        label="Catches"
+                        color="text-primary"
+                      />
+                    ))}
+                  </div>
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3 mb-8 border-l-4 border-red-950 pl-6 text-center sm:text-right w-full sm:w-auto justify-end md:text-left md:justify-start">
+                      <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter text-center md:text-left">
+                        Run Outs <br />
+                        <span className="text-[10px] tracking-[0.4em] not-italic text-gray-700 font-black">
+                          Run Out Specialists
+                        </span>
+                      </h3>
+                    </div>
+                    {rankedData.runouts.map((p, i) => (
+                      <RankingCard
+                        key={p.external_id}
+                        rank={i}
+                        player={p}
+                        value={p.run_outs || 0}
+                        label="Run Outs"
+                        color="text-red-900"
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
         </div>
       </div>
     </div>

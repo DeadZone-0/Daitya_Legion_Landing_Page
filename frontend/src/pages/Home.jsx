@@ -1,7 +1,4 @@
-import {
-  animate,
-  motion
-} from "framer-motion";
+import { animate, motion } from "framer-motion";
 import {
   Activity,
   Crosshair,
@@ -10,7 +7,7 @@ import {
   Shield,
   Target,
   Trophy,
-  Zap
+  Zap,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import CaptainSection from "../components/CaptainSection.jsx";
@@ -67,12 +64,12 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+        const API_BASE_URL = "https://daitya-legion-api-264.onrender.com";
         const [playersRes, teamRes] = await Promise.all([
           fetch(`${API_BASE_URL}/api/players`),
           fetch(`${API_BASE_URL}/api/team`),
         ]);
-        
+
         const playersRaw = await playersRes.json();
         const playersData = Array.isArray(playersRaw) ? playersRaw : [];
         const teamData = await teamRes.json();
@@ -101,15 +98,15 @@ const Home = () => {
     "ansh!",
     "sagar pathak",
     "deepak kothiyal",
-    "akshit bisht"
+    "akshit bisht",
   ];
 
   const mainPlayersListSorted = mainPlayerNames
-    .map(name => players.find(p => p.name?.toLowerCase() === name))
+    .map((name) => players.find((p) => p.name?.toLowerCase() === name))
     .filter(Boolean);
 
   const teamMembersList = players.filter(
-    p => !mainPlayerNames.includes(p.name?.toLowerCase())
+    (p) => !mainPlayerNames.includes(p.name?.toLowerCase()),
   );
 
   return (
@@ -247,7 +244,11 @@ const Home = () => {
                 title="Tournaments"
                 icon={Monitor}
               />
-              <Counter value={players.length} title="Players" icon={Crosshair} />
+              <Counter
+                value={players.length}
+                title="Players"
+                icon={Crosshair}
+              />
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 mt-12">
@@ -311,8 +312,10 @@ const Home = () => {
         ) : (
           <>
             <div className="flex flex-col items-center mb-10 text-center w-full mt-4">
-               <h3 className="text-xl sm:text-3xl font-black mb-2 text-white glow-text-primary tracking-tighter italic uppercase">Main Players of the Team</h3>
-               <div className="h-px w-24 bg-primary/40 mb-8" />
+              <h3 className="text-xl sm:text-3xl font-black mb-2 text-white glow-text-primary tracking-tighter italic uppercase">
+                Main Players of the Team
+              </h3>
+              <div className="h-px w-24 bg-primary/40 mb-8" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12 justify-items-center mb-24">
               {mainPlayersListSorted.map((player) => (
@@ -321,8 +324,10 @@ const Home = () => {
             </div>
 
             <div className="flex flex-col items-center mb-10 text-center w-full pt-16 border-t border-white/5">
-               <h3 className="text-xl sm:text-3xl font-black mb-2 text-white glow-text-primary tracking-tighter italic uppercase">Team Members</h3>
-               <div className="h-px w-24 bg-primary/40 mb-8" />
+              <h3 className="text-xl sm:text-3xl font-black mb-2 text-white glow-text-primary tracking-tighter italic uppercase">
+                Team Members
+              </h3>
+              <div className="h-px w-24 bg-primary/40 mb-8" />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12 justify-items-center mb-40">
               {teamMembersList.map((player) => (
@@ -336,10 +341,17 @@ const Home = () => {
       {!loading && (
         <>
           <CaptainSection
-            captain={players.find((p) => p.name?.toLowerCase().includes("bruce")) || players[0]}
+            captain={
+              players.find((p) => p.name?.toLowerCase().includes("bruce")) ||
+              players[0]
+            }
           />
           <ViceCaptainSection
-            vc={players.find((p) => p.name?.toLowerCase().includes("ashraya")) || players[1] || players[0]}
+            vc={
+              players.find((p) => p.name?.toLowerCase().includes("ashraya")) ||
+              players[1] ||
+              players[0]
+            }
           />
         </>
       )}
