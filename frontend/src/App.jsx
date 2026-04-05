@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Rankings from './pages/Rankings.jsx';
 import AdminLogin from './pages/AdminLogin.jsx';
@@ -11,8 +11,7 @@ import { Analytics } from '@vercel/analytics/react';
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('adminToken');
   if (!token) {
-    window.location.href = '/admin/login';
-    return null;
+    return <Navigate to="/admin/login" replace />;
   }
   return children;
 };
@@ -20,29 +19,38 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   const [isAuthorized, setIsAuthorized] = useState(false);
 
-  if (!isAuthorized) {
-    return <EntryGate onEnter={() => setIsAuthorized(true)} />;
-  }
-
   return (
     <Router>
-      <BatarangEffect>
-        <div className="app-container bg-[#050505] min-h-screen selection:bg-primary selection:text-white">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/rankings" element={<Rankings />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute>
-                  <AdminDashboard />
-                </ProtectedRoute>
-              } 
-            />
-          </Routes>
-        </div>
-      </BatarangEffect>
+      <Routes>
+        {/* Admin routes bypass the EntryGate so they are always accessible */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        {/* All other routes go through the EntryGate splash screen */}
+        <Route
+          path="*"
+          element={
+            isAuthorized ? (
+              <BatarangEffect>
+                <div className="app-container bg-[#050505] min-h-screen selection:bg-primary selection:text-white">
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/rankings" element={<Rankings />} />
+                  </Routes>
+                </div>
+              </BatarangEffect>
+            ) : (
+              <EntryGate onEnter={() => setIsAuthorized(true)} />
+            )
+          }
+        />
+      </Routes>
       <Analytics />
     </Router>
   );

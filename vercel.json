@@ -1,5 +1,4 @@
 {
-  "name": "daitya-legion-frontend",
   "builds": [
     {
       "src": "frontend/package.json",
@@ -7,7 +6,22 @@
       "config": {
         "distDir": "dist"
       }
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
   ],
-  "framework": "vite"
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs18.x",
+      "maxDuration": 30
+    }
+  },
+  "ignore": [
+    "backend/node_modules/**",
+    "backend/scripts/**",
+    "backend/jobs/**",
+    "backend/data/**"
+  ]
 }
