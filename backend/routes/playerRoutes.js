@@ -6,6 +6,19 @@ import {
     updatePlayer,
 } from "../controllers/playerController.js";
 import { protect } from "../middleware/authMiddleware.js";
+import multer from "multer";
+import path from "path";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage });
 
 const router = express.Router();
 
@@ -25,8 +38,8 @@ router.get("/:external_id/matches", async (req, res) => {
 });
 
 // Protected: Admin CRUD
-router.post("/", protect, createPlayer);
-router.put("/:id", protect, updatePlayer);
+router.post("/", protect, upload.single('image'), createPlayer);
+router.put("/:id", protect, upload.single('image'), updatePlayer);
 router.delete("/:id", protect, deletePlayer);
 
 export default router;

@@ -25,7 +25,7 @@ const MatchRow = ({ match, index }) => {
       
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-3">
-          <p className="text-white font-black text-sm uppercase italic tracking-tighter group-hover/row:text-primary transition-colors">vs {match.opponent}</p>
+          <p className="text-white font-black text-xs sm:text-sm uppercase italic tracking-tighter group-hover/row:text-primary transition-colors">vs {match.opponent}</p>
           <div className="h-px w-4 bg-white/10"></div>
           <span className="text-[8px] text-gray-700 font-black tracking-widest uppercase">{match.date}</span>
         </div>
@@ -85,7 +85,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        className="relative w-full max-w-[1500px] h-full md:max-h-[1000px] bg-[#050505] border border-white/10 shadow-[0_0_100px_rgba(239,35,60,0.1)] flex flex-col md:flex-row min-h-screen md:min-h-0"
+        className="relative w-full max-w-[1500px] h-full md:max-h-[1000px] bg-[#050505] border border-white/10 shadow-[0_0_100px_rgba(239,35,60,0.1)] flex flex-col lg:flex-row min-h-screen lg:min-h-0"
       >
         {/* Close Button */}
         <button onClick={onClose} className="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 bg-primary/10 hover:bg-primary border border-primary/20 flex items-center justify-center transition-all z-50 text-primary hover:text-white">
@@ -93,7 +93,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
         </button>
 
         {/* Sidebar Dossier */}
-        <div className="w-full md:w-[450px] max-w-full border-r border-white/5 bg-[#0a0b10] p-6 md:p-16 flex flex-col items-center flex-shrink-0 group">
+        <div className="w-full lg:w-[450px] max-w-full border-b lg:border-b-0 lg:border-r border-white/5 bg-[#0a0b10] p-6 lg:p-16 flex flex-col items-center flex-shrink-0 group">
           <div className="relative mb-12 w-full max-w-[320px]">
             <div className="absolute inset-0 bg-primary/20 blur-[60px] animate-pulse"></div>
             <div className="relative aspect-[3/4] border border-primary/30 rounded-sm overflow-hidden shadow-2xl grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-1000">
@@ -104,8 +104,8 @@ const PlayerDetailsModal = ({ player, onClose }) => {
 
           <div className="w-full text-center md:text-left">
             <div className="flex flex-col mb-4">
-               <span className="text-[10px] font-black text-primary uppercase tracking-[0.6em] mb-1">Asset Detected</span>
-               <h2 className="text-3xl lg:text-7xl font-black text-white glow-text-primary tracking-tighter uppercase italic leading-none">{player.name}</h2>
+               <span className="text-[10px] font-black text-primary uppercase tracking-[0.6em] mb-1">Player Profile</span>
+               <h2 className="text-3xl sm:text-4xl lg:text-7xl font-black text-white glow-text-primary tracking-tighter uppercase italic leading-none">{player.name}</h2>
             </div>
             <div className="flex flex-wrap gap-3 mt-6">
                <span className="px-4 py-1.5 bg-primary/10 border border-primary/30 text-[9px] font-black uppercase text-primary tracking-widest">{player.role}</span>
@@ -115,19 +115,19 @@ const PlayerDetailsModal = ({ player, onClose }) => {
 
           <div className="w-full mt-12 grid grid-cols-2 gap-4">
              <div className="p-5 bg-white/2 border border-white/5 rounded-sm">
-                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Engagements</span>
+                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Matches</span>
                 <span className="text-3xl font-black text-white italic">{player.matches}</span>
              </div>
              <div className="p-5 bg-white/2 border border-white/5 rounded-sm">
-                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Kill/Loss %</span>
+                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Win Rate</span>
                 <span className="text-3xl font-black text-primary italic">{winRate}%</span>
              </div>
              <div className="p-5 bg-white/2 border border-white/5 rounded-sm">
-                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Awards Locked</span>
+                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Man of the Match</span>
                 <span className="text-3xl font-black text-gold italic">{player.man_of_the_match || 0}</span>
              </div>
              <div className="p-5 bg-white/2 border border-white/5 rounded-sm">
-                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Neural Ops</span>
+                <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Wickets</span>
                 <span className="text-3xl font-black text-red-800 italic">{player.wickets || 0}</span>
              </div>
           </div>
@@ -155,11 +155,11 @@ const PlayerDetailsModal = ({ player, onClose }) => {
             <AnimatePresence mode="wait">
               {activeTab === 'matches' && (
                 <motion.div key="matches" className="space-y-6">
-                   <div className="flex items-center justify-between mb-8">
-                     <h4 className="text-2xl font-black text-white italic uppercase tracking-tighter">Tactical History // Previous 10</h4>
+                   <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+                     <h4 className="text-xl sm:text-2xl font-black text-white italic uppercase tracking-tighter">Match History — Last 10</h4>
                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                        <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">Feed Status: Synchronized</span>
+                        <div className="w-2 h-2 rounded-full bg-green-500" />
+                        <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">Data: Synchronized</span>
                      </div>
                    </div>
                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
@@ -171,34 +171,34 @@ const PlayerDetailsModal = ({ player, onClose }) => {
                 <motion.div key="stats" className="space-y-12">
                    <div>
                      <h4 className="text-xl font-black text-primary italic uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <Zap className="w-5 h-5" /> Offense Matrix
+                        <Zap className="w-5 h-5" /> Batting Stats
                      </h4>
                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-6">
                         {[
-                          { label: "Elite HS", val: `${player.batting?.high_score || 0}`, icon: Trophy },
-                          { label: "Strike Power", val: player.batting?.strike_rate, icon: Zap },
-                          { label: "Combat Average", val: player.batting?.average, icon: Target },
+                          { label: "High Score", val: `${player.batting?.high_score || 0}`, icon: Trophy },
+                          { label: "Strike Rate", val: player.batting?.strike_rate, icon: Zap },
+                          { label: "Batting Avg", val: player.batting?.average, icon: Target },
                         ].map((s, i) => (
-                           <div key={i} className="p-4 md:p-8 bg-[#0a0b10] border border-white/5 group hover:border-primary/40 transition-all">
+                           <div key={i} className="p-4 sm:p-8 bg-[#0a0b10] border border-white/5 group hover:border-primary/40 transition-all">
                               <span className="text-[9px] font-black uppercase text-gray-700 tracking-widest block mb-2">{s.label}</span>
-                              <span className="text-4xl font-black text-white italic uppercase">{s.val}</span>
+                              <span className="text-2xl sm:text-4xl font-black text-white italic uppercase">{s.val}</span>
                            </div>
                         ))}
                      </div>
                    </div>
                    <div>
                      <h4 className="text-xl font-black text-red-800 italic uppercase tracking-widest mb-8 flex items-center gap-4">
-                        <Target className="w-5 h-5" /> Suppression Matrix
+                        <Target className="w-5 h-5" /> Bowling Stats
                      </h4>
                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-6">
                         {[
-                          { label: "Target Figures", val: player.bowling?.best_bowling, icon: Crosshair },
-                          { label: "Executions", val: player.wickets, icon: Target },
-                          { label: "Resource Usage", val: player.bowling?.economy, icon: Activity },
+                          { label: "Best Bowling", val: player.bowling?.best_bowling, icon: Crosshair },
+                          { label: "Wickets", val: player.wickets, icon: Target },
+                          { label: "Economy", val: player.bowling?.economy, icon: Activity },
                         ].map((s, i) => (
-                           <div key={i} className="p-4 md:p-8 bg-[#0a0b10] border border-white/5 group hover:border-red-900/40 transition-all">
+                           <div key={i} className="p-4 sm:p-8 bg-[#0a0b10] border border-white/5 group hover:border-red-900/40 transition-all">
                               <span className="text-[9px] font-black uppercase text-gray-700 tracking-widest block mb-2">{s.label}</span>
-                              <span className="text-4xl font-black text-white italic uppercase">{s.val}</span>
+                              <span className="text-2xl sm:text-4xl font-black text-white italic uppercase">{s.val}</span>
                            </div>
                         ))}
                      </div>
@@ -208,23 +208,23 @@ const PlayerDetailsModal = ({ player, onClose }) => {
               {activeTab === 'awards' && (
                 <motion.div key="awards" className="flex flex-col items-center justify-center h-full text-center">
                    <div className="w-32 h-32 rounded-full border border-primary/20 flex items-center justify-center mb-10 relative">
-                      <div className="absolute inset-0 bg-primary/20 blur-3xl animate-pulse"></div>
+                      <div className="absolute inset-0 bg-primary/20 blur-3xl animate-pulse" />
                       <Trophy className="w-16 h-16 text-primary glow-text-primary" />
                    </div>
-                   <h3 className="text-5xl font-black text-white italic uppercase tracking-tighter mb-4">{player.man_of_the_match}x Player of Mission</h3>
-                   <p className="text-gray-700 font-bold uppercase tracking-[0.5em] text-xs">High-Value Target Neutralization Awards</p>
+                   <h3 className="text-5xl font-black text-white italic uppercase tracking-tighter mb-4">{player.man_of_the_match}× Man of the Match</h3>
+                   <p className="text-gray-700 font-bold uppercase tracking-[0.5em] text-xs">🏆 Outstanding Performance Awards</p>
                    
                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-12 mt-10 md:mt-20 w-full max-w-2xl px-4 md:px-10">
                       <div className="flex flex-col">
-                        <span className="text-[8px] font-black text-gray-800 uppercase tracking-widest mb-2">Interceptions</span>
+                        <span className="text-[8px] font-black text-gray-800 uppercase tracking-widest mb-2">Catches</span>
                         <span className="text-3xl font-black text-white">{player.catches || 0}</span>
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[8px] font-black text-gray-800 uppercase tracking-widest mb-2">Neutralized</span>
+                        <span className="text-[8px] font-black text-gray-800 uppercase tracking-widest mb-2">Run Outs</span>
                         <span className="text-3xl font-black text-white">{player.run_outs || 0}</span>
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-[8px] font-black text-gray-800 uppercase tracking-widest mb-2">Deployments</span>
+                        <span className="text-[8px] font-black text-gray-800 uppercase tracking-widest mb-2">Tournaments</span>
                         <span className="text-3xl font-black text-white">{player.tournaments || 0}</span>
                       </div>
                    </div>

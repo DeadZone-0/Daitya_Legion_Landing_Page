@@ -30,8 +30,8 @@ const Hero = () => {
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", stiffness: 100, damping: 10 }}
               src="/logo.png" 
-              alt="Daitya Legion Syndicate" 
-              className="w-56 md:w-80 relative z-10 hover:scale-105 transition-transform duration-700 cursor-crosshair drop-shadow-[0_0_50px_rgba(239,35,60,0.8)]"
+              alt="Daitya Legion Cricket Club" 
+              className="w-40 md:w-80 relative z-10 hover:scale-105 transition-transform duration-700 cursor-crosshair drop-shadow-[0_0_50px_rgba(239,35,60,0.8)]"
               onError={(e) => { e.target.src = 'https://cricheroes.com/assets/images/team-placeholder.png'; }}
             />
           </div>
@@ -42,40 +42,44 @@ const Hero = () => {
            animate={{ opacity: 1, scale: 1 }}
            transition={{ delay: 0.3, duration: 0.8 }}
         >
-           <h1 className="text-8xl md:text-[14rem] font-black leading-none tracking-tighter mb-6 italic text-white flex flex-col group">
+           <h1 className="text-5xl sm:text-7xl md:text-[14rem] font-black leading-none tracking-tighter mb-6 italic text-white flex flex-col group">
              <span className="glow-text-primary group-hover:tracking-[0.1em] transition-all duration-1000">DAITYA</span>
-             <span className="text-primary not-italic tracking-[0.25em] -mt-6 md:-mt-14 drop-shadow-[0_0_30px_rgba(239,35,60,0.4)]">LEGION</span>
+             <span className="text-primary not-italic tracking-[0.25em] -mt-2 sm:-mt-6 md:-mt-14 drop-shadow-[0_0_30px_rgba(239,35,60,0.4)]">LEGION</span>
            </h1>
            <div className="flex items-center justify-center gap-4 mb-12">
               <div className="h-px w-12 bg-primary/40"></div>
-              <p className="text-gray-400 font-black uppercase tracking-[0.8em] text-xs md:text-sm">
-                PROJECT DARK KNIGHT // OPS CONSORTIUM
+              <p className="text-gray-400 font-black uppercase tracking-[0.4em] md:tracking-[0.8em] text-[10px] md:text-sm">
+                DAITYA LEGION // CRICKET CLUB
               </p>
               <div className="h-px w-12 bg-primary/40"></div>
            </div>
         </motion.div>
 
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="flex flex-wrap justify-center gap-6"
+          className="flex flex-col items-center gap-6 w-full max-w-2xl mx-auto"
         >
-          <button className="btn-premium px-16 py-6 group relative overflow-hidden">
-             <span className="relative z-10">Access Archive</span>
-             <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-          </button>
-          <button className="px-12 py-6 rounded-sm bg-white/2 border border-white/5 hover:border-primary/50 transition-all text-white font-black uppercase text-[10px] tracking-[0.3em] flex items-center gap-4 group">
-             <Crosshair className="w-4 h-4 text-primary group-hover:rotate-90 transition-transform" />
-             Strategic Summary
-          </button>
+          <div className="flex flex-wrap justify-center gap-6 w-full">
+            <button className="btn-premium px-12 py-6 group relative overflow-hidden flex-1 min-w-[200px]">
+               <span className="relative z-10 text-[11px]"><a href="https://wa.me/918755903705?text=Hello%20Captain%2C%20I%20want%20to%20book%20a%20paid%20match%20with%20Daitya%20Legion." target="_blank" rel="noopener noreferrer">Book Match (Paid)</a></span>
+               <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            </button>
+            <button className="px-12 py-6 rounded-sm bg-white/5 border border-white/10 hover:border-primary/50 transition-all text-white font-black uppercase text-[11px] tracking-[0.3em] flex-1 min-w-[200px] flex justify-center group">
+               <a href="https://wa.me/918755903705?text=Hello%20Captain%2C%20I%20want%20to%20book%20a%20friendly%20match%20with%20Daitya%20Legion." target="_blank" rel="noopener noreferrer">Book Friendly Match</a>
+            </button>
+          </div>
+          <p className="text-gray-500 text-[10px] sm:text-xs font-black uppercase tracking-[0.4em] italic mt-4 text-center max-w-lg">
+            "You either die a hero or live long enough to see yourself become the villain"
+          </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-32 max-w-5xl mx-auto border-t border-white/5 pt-16">
            {[
-             { label: "Strike Power", val: "ALPHA", icon: Zap, color: "text-primary" },
-             { label: "Execution Logic", val: "PRECISE", icon: Target, color: "text-red-700" },
-             { label: "Surveillance", val: "ACTIVE", icon: Eye, color: "text-gray-500" },
+             { label: "Batting", val: "LETHAL", icon: Zap, color: "text-primary" },
+             { label: "Bowling", val: "PRECISE", icon: Target, color: "text-red-700" },
+             { label: "Fielding", val: "SHARP", icon: Eye, color: "text-gray-500" },
            ].map((item, i) => (
              <motion.div 
                key={i} 

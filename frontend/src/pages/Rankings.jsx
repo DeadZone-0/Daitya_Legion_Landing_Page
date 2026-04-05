@@ -18,11 +18,11 @@ const RankingCard = ({ player, rank, value, label, color, type }) => {
           <span className={rank === 0 ? "-rotate-45" : ""}>{rank + 1}</span>
         </div>
         <div className="flex items-center gap-5">
-          <div className="w-14 h-14 rounded-sm overflow-hidden border border-white/10 relative">
+          <div className="w-14 h-14 rounded-sm overflow-hidden border border-white/10 relative flex-shrink-0">
             <img
               src={player.image_url || "https://via.placeholder.com/100"}
               alt=""
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+              className="w-full h-full object-cover md:grayscale group-hover:grayscale-0 transition-all duration-500"
               referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -137,20 +137,10 @@ const Rankings = () => {
   }, [players]);
 
   const tabs = [
-    { id: "batting", label: "BATTING ELITE", icon: Zap, color: "text-primary" },
-    {
-      id: "bowling",
-      label: "DEATH BOWLER",
-      icon: Target,
-      color: "text-red-700",
-    },
-    {
-      id: "allrounder",
-      label: "TACTICAL UNIT",
-      icon: Shield,
-      color: "text-gray-400",
-    },
-    { id: "fielding", label: "SENTINELS", icon: Waves, color: "text-red-900" },
+    { id: "batting", label: "BATTING", icon: Zap, color: "text-primary" },
+    { id: "bowling", label: "BOWLING", icon: Target, color: "text-red-700" },
+    { id: "allrounder", label: "ALL-ROUNDERS", icon: Shield, color: "text-gray-400" },
+    { id: "fielding", label: "FIELDING", icon: Waves, color: "text-red-900" },
   ];
 
   return (
@@ -172,7 +162,7 @@ const Rankings = () => {
             className="flex items-center gap-4 px-6 py-2 rounded-sm bg-primary/10 border border-primary/20 mb-8 font-black uppercase text-[10px] text-primary tracking-[0.4em]"
           >
             <Shield className="w-3.5 h-3.5" />
-            Strategic Asset Rankings ({players.length} Active Personnel)
+            Player Rankings — {players.length} Players
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, scale: 0.9 }}
@@ -180,13 +170,13 @@ const Rankings = () => {
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl lg:text-[10rem] font-black text-white glow-text-primary tracking-tighter leading-none italic uppercase"
           >
-            ELITE{" "}
+            PLAYER{" "}
             <span className="text-primary not-italic tracking-[0.15em] ml-4 font-black">
-              UNITS
+              RANKINGS
             </span>
           </motion.h1>
           <p className="text-gray-700 font-bold uppercase tracking-[0.6em] text-[10px] mt-4">
-            Confidential Performance Metrics // Legion Shield
+            Season Performance Leaderboard
           </p>
         </div>
 
@@ -217,10 +207,10 @@ const Rankings = () => {
               </div>
               <div className="mt-12 text-center">
                 <p className="text-white font-black uppercase tracking-[0.5em] text-xs mb-3 italic">
-                  Initiating Tactical Scan
+                  Loading Rankings
                 </p>
                 <p className="text-gray-700 text-[9px] font-bold uppercase tracking-[0.3em]">
-                  Scrambling Neural Combat Data...
+                  Fetching player statistics...
                 </p>
               </div>
             </div>
@@ -256,7 +246,7 @@ const Rankings = () => {
                     rank={i}
                     player={item.p}
                     value={item.score}
-                    label="Combat Rating"
+                    label="Batting Rating"
                     color="text-primary"
                   />
                 ))}
@@ -276,7 +266,7 @@ const Rankings = () => {
                     rank={i}
                     player={item.p}
                     value={item.score}
-                    label="Execution Force"
+                    label="Bowling Rating"
                     color="text-red-700"
                   />
                 ))}
@@ -296,7 +286,7 @@ const Rankings = () => {
                     rank={i}
                     player={item.p}
                     value={item.score}
-                    label="Neural Index"
+                    label="All-Round Rating"
                     color="text-gray-400"
                   />
                 ))}
@@ -313,9 +303,9 @@ const Rankings = () => {
                 <div className="space-y-6">
                   <div className="flex items-center gap-3 mb-8 border-l-4 border-primary pl-6">
                     <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter text-center md:text-left">
-                      The Sentinels <br />
+                      Catches <br />
                       <span className="text-[10px] tracking-[0.4em] not-italic text-gray-700 font-black">
-                        Interception Specialists
+                        Best Fielders
                       </span>
                     </h3>
                   </div>
@@ -325,7 +315,7 @@ const Rankings = () => {
                       rank={i}
                       player={p}
                       value={p.catches || 0}
-                      label="Interceptions"
+                      label="Catches"
                       color="text-primary"
                     />
                   ))}
@@ -333,9 +323,9 @@ const Rankings = () => {
                 <div className="space-y-6">
                   <div className="flex items-center gap-3 mb-8 border-l-4 border-red-950 pl-6 text-center sm:text-right w-full sm:w-auto justify-end md:text-left md:justify-start">
                     <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter text-center md:text-left">
-                      The Enforcers <br />
+                      Run Outs <br />
                       <span className="text-[10px] tracking-[0.4em] not-italic text-gray-700 font-black">
-                        Direct Termination
+                        Run Out Specialists
                       </span>
                     </h3>
                   </div>
@@ -345,7 +335,7 @@ const Rankings = () => {
                       rank={i}
                       player={p}
                       value={p.run_outs || 0}
-                      label="Neutralized"
+                      label="Run Outs"
                       color="text-red-900"
                     />
                   ))}

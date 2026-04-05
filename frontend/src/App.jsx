@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Rankings from './pages/Rankings.jsx';
 import AdminLogin from './pages/AdminLogin.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import BatarangEffect from './components/BatarangEffect.jsx';
+import EntryGate from './components/EntryGate.jsx';
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('adminToken');
@@ -16,6 +17,12 @@ const ProtectedRoute = ({ children }) => {
 };
 
 function App() {
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  if (!isAuthorized) {
+    return <EntryGate onEnter={() => setIsAuthorized(true)} />;
+  }
+
   return (
     <Router>
       <BatarangEffect>

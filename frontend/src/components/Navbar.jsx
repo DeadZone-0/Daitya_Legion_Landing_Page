@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, Home, Shield, Crosshair, Zap } from 'lucide-react';
+import { Trophy, Home, Shield } from 'lucide-react';
+import AudioConsole from './AudioConsole.jsx';
+import TeamLogo from '../assets/Daitya_Legion_LOGO.png';
 
 const Navbar = () => {
   const location = useLocation();
@@ -12,22 +14,38 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4">
+    <nav className="fixed top-0 left-0 right-0 z-[100] px-6 py-4 selection:bg-primary selection:text-white">
       <div className="max-w-[1400px] mx-auto flex items-center justify-between glass-panel px-8 py-3 bg-black/80 border-white/5 backdrop-blur-3xl shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-sm bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 transition-all">
-            <Shield className="w-6 h-6 text-primary" />
+        <Link to="/" className="flex items-center gap-4 group">
+          <div className="flex-shrink-0 w-14 h-14 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
+            <img 
+              src={TeamLogo} 
+              alt="Daitya Legion Official Logo" 
+              className="h-full w-auto object-contain drop-shadow-[0_0_15px_rgba(136,8,8,0.5)]" 
+              onError={(e) => { e.target.src = 'https://cricheroes.com/assets/images/team-profile-placeholder.png'; }}
+            />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-black text-white tracking-widest leading-none">DAITYA <span className="text-primary italic">LEGION</span></span>
-            <span className="text-[7px] font-bold text-gray-600 uppercase tracking-[0.5em] mt-1">Operational Command</span>
+            <span className="text-xl sm:text-2xl font-black text-white tracking-widest leading-none drop-shadow-sm select-none uppercase">
+              DAITYA <span className="text-primary italic">LEGION</span>
+            </span>
+            <span className="text-[7px] sm:text-[8px] font-bold text-gray-500 uppercase tracking-[0.5em] mt-1 opacity-80 select-none">
+              Operational Command
+            </span>
           </div>
         </Link>
 
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-2 mr-6 text-gray-700">
-             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-             <span className="text-[8px] font-black uppercase tracking-widest">Neural Link: Online</span>
+        <div className="flex items-center gap-4 lg:gap-8">
+          <div className="hidden lg:flex flex-col items-end mr-6 text-gray-700">
+             <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-[8px] font-black uppercase tracking-widest">Neural Link: Online</span>
+             </div>
+             <span className="text-[6px] font-bold text-primary/40 uppercase tracking-[0.4em] mt-1">Architect: Sagar Pathak</span>
+          </div>
+
+          <div className="hidden sm:block mr-2">
+            <AudioConsole />
           </div>
           
           <div className="flex items-center gap-1">

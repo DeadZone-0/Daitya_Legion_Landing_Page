@@ -5,7 +5,7 @@ import { Shield, Zap, Target, Award, MessageCircle, MoreVertical, Crosshair } fr
 const CaptainSection = ({ captain }) => {
   if (!captain) return null;
 
-  const whatsappUrl = `https://wa.me/919058937803?text=Reporting%20for%20duty,%20Commander%20Bruce.`;
+  const whatsappUrl = `https://wa.me/919058937803?text=Hi%20Captain%20Bruce!%20Checking%20in%20from%20Daitya%20Legion.`;
 
   return (
     <section className="relative w-full py-20 md:py-40 overflow-hidden bg-[#0a0b10] border-y border-white/5">
@@ -39,7 +39,7 @@ const CaptainSection = ({ captain }) => {
               <div className="absolute bottom-10 left-10 right-10">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-8 h-px bg-primary"></div>
-                  <span className="text-[10px] font-black uppercase text-primary tracking-[0.5em]">Commanding Officer</span>
+                  <span className="text-[10px] font-black uppercase text-primary tracking-[0.5em]">Captain</span>
                 </div>
                 <h3 className="text-4xl font-black text-white glow-text-primary tracking-tighter uppercase italic leading-none">{captain.name}</h3>
               </div>
@@ -51,22 +51,22 @@ const CaptainSection = ({ captain }) => {
             <div>
               <div className="inline-flex items-center gap-3 px-5 py-2 rounded-sm bg-white/5 border border-white/10 mb-8">
                 <Shield className="w-4 h-4 text-primary" />
-                <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">Codename: The Dark Knight</span>
+                <span className="text-[10px] font-black text-gray-400 uppercase tracking-[0.4em]">🏏 Team Captain</span>
               </div>
               <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white leading-[0.8] tracking-tighter mb-8 italic uppercase">
-                THE SYNDICATE'S <br /><span className="text-primary not-italic tracking-[0.1em] font-black">ARCHITECT</span>
+                DAITYA LEGION'S <br /><span className="text-primary not-italic tracking-[0.1em] font-black">CAPTAIN</span>
               </h2>
               <p className="text-gray-500 text-sm md:text-lg text-center lg:text-left font-medium max-w-2xl leading-relaxed">
-                Strategic mastermind behind the Legion's neural network. Bruce coordinates field operations with absolute precision, ensuring every tactical deployment follows the Dark Knight Protocol.
+                Leading Daitya Legion with passion and precision. Bruce captains the side with tactical clarity — setting the tone with bat and ball, and inspiring the whole team every single match.
               </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12 border-t border-white/5 pt-12">
               {[
-                { label: "Strike Force", val: captain.batting?.strike_rate || '---', icon: Zap },
-                { label: "Executions", val: captain.wickets || 0, icon: Target },
-                { label: "Battle Ratio", val: captain.batting?.average || '---', icon: Shield },
-                { label: "Deployments", val: captain.matches || 0, icon: Crosshair },
+                { label: "Strike Rate", val: captain.batting?.strike_rate || '---', icon: Zap },
+                { label: "Wickets", val: captain.wickets || 0, icon: Target },
+                { label: "Batting Avg", val: captain.batting?.average || '---', icon: Shield },
+                { label: "Matches", val: captain.matches || 0, icon: Crosshair },
               ].map((stat, i) => (
                 <div key={i} className="flex flex-col group">
                   <div className="flex items-center gap-2 text-gray-700 mb-2 group-hover:text-primary transition-colors">
@@ -87,7 +87,7 @@ const CaptainSection = ({ captain }) => {
               >
                 <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300 -z-10"></div>
                 <MessageCircle className="w-5 h-5" />
-                <span>Establish Comms Channel</span>
+                <span>Message Captain</span>
               </a>
             </div>
           </div>

@@ -16,6 +16,7 @@ const playerSchema = new mongoose.Schema(
       type: String,
       default: 'Unknown',
     },
+    titles: [{ type: String }],
     matches: {
       type: Number,
       default: 0,
@@ -74,7 +75,7 @@ const playerSchema = new mongoose.Schema(
     ],
     match_history: [
       {
-        match_id: Number,
+        match_id: String,
         date: String,
         opponent: String,
         opp_logo: String,

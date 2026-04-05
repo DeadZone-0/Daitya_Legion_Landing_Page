@@ -2,7 +2,7 @@ import Player from '../models/Player.js';
 import Team from '../models/Team.js';
 
 const BLACKLIST_IDS = ['1', '3'];
-const BLACKLIST_NAMES = ['Vikram Singh'];
+const BLACKLIST_NAMES = ['Vikram Singh', 'Aditya Jethuri', 'Aryan Singh', 'Pranjal', 'Pranjal Rawat'];
 const DAITYA_TEAM_ID = '11183415';
 
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
@@ -51,6 +51,7 @@ function parseStatement(ps) {
     run_outs: num(/making <b>(\d+)<\/b> run outs/),
     man_of_the_match: num(/has won <b>(\d+)<\/b> Man of the Match awards/),
     tournaments: num(/played in <b>(\d+)<\/b> different tournaments/),
+    titles: Array.from(ps.matchAll(/class="badge[^>]+>([^<]+)<\/span>/g)).map(m => m[1].trim())
   };
 }
 
@@ -145,7 +146,7 @@ async function fetchMatchHistory(playerId, buildId, slug) {
             my_overs: myInnings?.[0]?.overs_played || '—',
             opp_overs: oppInnings?.[0]?.overs_played || '—',
             toss: m.toss_details || '',
-            cricheroes_url: `https://cricheroes.com/scorecard/${m.match_id}`,
+            cricheroes_url: `https://cricheroes.com/scorecard/${m.match_id}/match-details/match-details/scorecard`,
             performance: performance || {
               batting: { runs: 0, balls: 0, fours: 0, sixes: 0, strike_rate: 0, how_out: 'DNB' },
               bowling: { wickets: 0, overs: 0, runs: 0, economy: 0 }
@@ -259,6 +260,7 @@ export const scrapePlayers = async () => {
         name: info.name,
         image_url: info.profile_photo || null,
         role: info.playing_role || m.role,
+        titles: (info.badges || []).map(b => b.name) || extras.titles || [],
         matches: info.total_matches || 0,
         runs: info.total_runs || 0,
         wickets: info.total_wickets || 0,

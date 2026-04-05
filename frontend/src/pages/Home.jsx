@@ -95,6 +95,23 @@ const Home = () => {
     fetchData();
   }, []);
 
+  const mainPlayerNames = [
+    "bruce wayne",
+    "maithani ashraya",
+    "ansh!",
+    "sagar pathak",
+    "deepak kothiyal",
+    "akshit bisht"
+  ];
+
+  const mainPlayersListSorted = mainPlayerNames
+    .map(name => players.find(p => p.name?.toLowerCase() === name))
+    .filter(Boolean);
+
+  const teamMembersList = players.filter(
+    p => !mainPlayerNames.includes(p.name?.toLowerCase())
+  );
+
   return (
     <div className="relative pb-0 overflow-hidden bg-[#050505] selection:bg-primary selection:text-white">
       <Navbar />
@@ -108,16 +125,16 @@ const Home = () => {
 
       <Hero />
 
-      {/* Mission Status Header */}
+      {/* Stats Header */}
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 mb-12 md:mb-20 relative z-10">
         <div className="flex items-center gap-6 mb-12">
-          <div className="w-1.5 h-12 bg-primary/80"></div>
+          <div className="w-1.5 h-12 bg-primary/80" />
           <div>
-            <h2 className="text-4xl md:text-6xl font-black text-white italic tracking-tighter uppercase leading-none mb-1">
-              Mission <span className="text-primary not-italic">Briefing</span>
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white italic tracking-tighter uppercase leading-none mb-1">
+              Team <span className="text-primary not-italic">Overview</span>
             </h2>
             <span className="text-[9px] font-black text-gray-600 uppercase tracking-[0.5em]">
-              Active Strategic Deployment Area
+              Live Performance Dashboard
             </span>
           </div>
         </div>
@@ -151,23 +168,23 @@ const Home = () => {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <span className="px-2 py-0.5 bg-primary text-white text-[8px] font-black uppercase tracking-widest rounded-sm">
-                      Hot Connection
+                      Live
                     </span>
                     <span className="text-[10px] text-gray-600 font-bold tracking-widest uppercase">
-                      Encryption Level: Delta
+                      Updated Match Stats
                     </span>
                   </div>
-                  <h3 className="text-2xl md:text-4xl lg:text-5xl font-black text-white italic tracking-tighter uppercase">
-                    NEURAL BATTLE{" "}
+                  <h3 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black text-white italic tracking-tighter uppercase">
+                    CRICHEROES{" "}
                     <span className="text-primary not-italic tracking-[0.1em]">
-                      FEED
+                      LIVE FEED
                     </span>
                   </h3>
                 </div>
               </div>
 
               <div className="flex items-center gap-6 px-10 py-5 bg-primary text-white font-black uppercase text-xs tracking-[0.3em] hover:bg-black hover:text-primary border border-primary transition-all shadow-[0_0_40px_rgba(239,35,60,0.3)]">
-                Initialize Stream
+                View on CricHeroes
                 <ExternalLink className="w-4 h-4" />
               </div>
             </div>
@@ -183,10 +200,10 @@ const Home = () => {
             className="mb-40 relative"
           >
             <div className="flex items-center justify-between mb-12">
-              <div className="flex items-center gap-5">
-                <div className="w-1 w-1 bg-primary"></div>
-                <h3 className="text-3xl font-black text-white italic tracking-tighter uppercase group hover:text-primary transition-colors cursor-default">
-                  Tactical Matrix
+              <div className="flex items-center gap-3 md:gap-5">
+                <div className="w-1 h-3 md:h-5 bg-primary" />
+                <h3 className="text-xl md:text-3xl font-black text-white italic tracking-tighter uppercase transition-colors cursor-default">
+                  Season Stats
                 </h3>
               </div>
               {teamStats.best_win && (
@@ -194,7 +211,7 @@ const Home = () => {
                   <Trophy className="w-5 h-5 text-primary" />
                   <div>
                     <span className="text-[7px] font-black uppercase text-gray-600 tracking-widest block mb-1">
-                      Peak Performance Log
+                      Best Win
                     </span>
                     <span className="text-sm font-black text-white tracking-tighter italic uppercase italic">
                       "{teamStats.best_win}"
@@ -207,30 +224,30 @@ const Home = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-6">
               <Counter
                 value={teamStats.total_matches}
-                title="Battle Logs"
+                title="Matches"
                 icon={Activity}
               />
               <Counter
                 value={teamStats.total_runs}
-                title="Neural Runs"
+                title="Total Runs"
                 icon={Zap}
               />
               <Counter
                 value={teamStats.total_wickets}
-                title="Executions"
+                title="Wickets"
                 icon={Target}
               />
               <Counter
                 value={teamStats.win_percentage?.replace("%", "") || 50}
-                title="K/D Ratio %"
+                title="Win Rate %"
                 icon={Shield}
               />
               <Counter
                 value={teamStats.total_tournaments || 5}
-                title="Tourney Ops"
+                title="Tournaments"
                 icon={Monitor}
               />
-              <Counter value={42} title="Assets Locked" icon={Crosshair} />
+              <Counter value={players.length} title="Players" icon={Crosshair} />
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 mt-12">
@@ -240,13 +257,13 @@ const Home = () => {
                 </div>
                 <div>
                   <h4 className="text-[10px] font-black text-gray-700 uppercase tracking-[0.4em] mb-2">
-                    Prime Asset: Offense
+                    🏏 Top Scorer
                   </h4>
                   <p className="text-xl md:text-3xl font-black text-white uppercase italic tracking-tighter group-hover:text-primary transition-colors block">
                     {teamStats.topScorer?.name || "---"}
                   </p>
                   <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mt-2">
-                    {teamStats.topScorer?.runs || 0} Confirmed Neural Damage
+                    {teamStats.topScorer?.runs || 0} Runs
                   </span>
                 </div>
               </div>
@@ -256,14 +273,13 @@ const Home = () => {
                 </div>
                 <div>
                   <h4 className="text-[10px] font-black text-gray-700 uppercase tracking-[0.4em] mb-2">
-                    Prime Asset: Suppression
+                    🎯 Top Wicket-Taker
                   </h4>
                   <p className="text-xl md:text-3xl font-black text-white uppercase italic tracking-tighter group-hover:text-red-700 transition-colors block">
                     {teamStats.topWicketer?.name || "---"}
                   </p>
                   <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mt-2">
-                    {teamStats.topWicketer?.wickets || 0} Confirmed Termination
-                    Units
+                    {teamStats.topWicketer?.wickets || 0} Wickets
                   </span>
                 </div>
               </div>
@@ -271,17 +287,17 @@ const Home = () => {
           </motion.div>
         )}
 
-        {/* Personnel Files Grid */}
+        {/* Squad Grid */}
         <div className="flex flex-col items-center mb-12 md:mb-24 text-center px-4">
-          <div className="h-px w-32 bg-primary/20 mb-8"></div>
-          <h2 className="text-5xl md:text-8xl lg:text-[12rem] font-black mb-6 text-white glow-text-primary tracking-tighter leading-none italic uppercase">
-            PERSONNEL{" "}
+          <div className="h-px w-32 bg-primary/20 mb-8" />
+          <h2 className="text-4xl sm:text-6xl md:text-8xl lg:text-[12rem] font-black mb-6 text-white glow-text-primary tracking-tighter leading-none italic uppercase">
+            SQUAD{" "}
             <span className="text-primary not-italic tracking-[0.2em]">
-              GRID
+              PROFILES
             </span>
           </h2>
           <p className="text-gray-700 font-bold uppercase tracking-[0.5em] text-xs">
-            Battle Ready Operational Personnel Files
+            Daitya Legion — Full Player Roster
           </p>
         </div>
 
@@ -293,11 +309,27 @@ const Home = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 justify-items-center mb-40">
-            {players.map((player) => (
-              <PlayerCard key={player._id || player.name} player={player} />
-            ))}
-          </div>
+          <>
+            <div className="flex flex-col items-center mb-10 text-center w-full mt-4">
+               <h3 className="text-xl sm:text-3xl font-black mb-2 text-white glow-text-primary tracking-tighter italic uppercase">Main Players of the Team</h3>
+               <div className="h-px w-24 bg-primary/40 mb-8" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12 justify-items-center mb-24">
+              {mainPlayersListSorted.map((player) => (
+                <PlayerCard key={player._id || player.name} player={player} />
+              ))}
+            </div>
+
+            <div className="flex flex-col items-center mb-10 text-center w-full pt-16 border-t border-white/5">
+               <h3 className="text-xl sm:text-3xl font-black mb-2 text-white glow-text-primary tracking-tighter italic uppercase">Team Members</h3>
+               <div className="h-px w-24 bg-primary/40 mb-8" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12 justify-items-center mb-40">
+              {teamMembersList.map((player) => (
+                <PlayerCard key={player._id || player.name} player={player} />
+              ))}
+            </div>
+          </>
         )}
       </div>
 
