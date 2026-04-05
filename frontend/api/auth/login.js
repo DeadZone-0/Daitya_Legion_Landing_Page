@@ -1,5 +1,5 @@
-import connectDB from "../../../backend/config/db.js";
-import { loginAdmin } from "../../../backend/controllers/authController.js";
+import connectDB from "../../backend/config/db.js";
+import { loginAdmin } from "../../backend/controllers/authController.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
