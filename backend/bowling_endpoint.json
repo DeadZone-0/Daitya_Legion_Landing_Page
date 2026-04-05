@@ -1,0 +1,47 @@
+{
+  "pageProps": {
+    "playerInfo": {
+      "status": true,
+      "data": {
+        "player_id": 41997128,
+        "name": "Bruce Wayne",
+        "is_pro": 0,
+        "profile_photo": "https://media.cricheroes.in/user_profile/1761669558975_UIr7mJDB9rfg.jpg",
+        "city_id": 5289,
+        "city_name": "Rishikesh",
+        "bowling_style": "Right-arm fast",
+        "batting_hand": "RHB",
+        "batter_category": "Classicist",
+        "bowler_category": "Aspirant",
+        "playing_role": "All-Rounder",
+        "player_skill": "",
+        "total_views": 90,
+        "total_matches": 28,
+        "total_wickets": 42,
+        "total_runs": 403,
+        "dob": "2009-04-03",
+        "player_statement": "A complete player, Bruce Wayne has made a big mark in cricket. With 31 turns at the crease, they've hit a top score of <b>38</b>, with an average of <b>15.50</b> and a quick strike rate of <b>82.92</b>. Their knack for hitting big shots is evident with <b>3 sixes</b> and <b>44 fours</b>.</br></br>\n                      Equally good at bowling, they've bowled <b>73.1</b> overs, taking <b>42</b> wickets at an economy rate of <b>4.67</b>. Despite a few wides, their accuracy is top-notch, making them a key player for their team."
+      }
+    },
+    "matches": {
+      "status": false,
+      "data": {}
+    },
+    "teams": {
+      "status": false,
+      "data": {}
+    },
+    "connections": {
+      "status": false,
+      "data": {},
+      "followedByUser": []
+    },
+    "photos": {
+      "status": false,
+      "data": {}
+    },
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "isDeleted": false
+  },
+  "__N_SSP": true
+}

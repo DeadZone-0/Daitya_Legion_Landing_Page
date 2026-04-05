@@ -1,0 +1,92 @@
+[
+  {
+    "external_id": "1",
+    "name": "Bruce Wayne",
+    "role": "Captain, RHB, Right-arm fast",
+    "matches": 28,
+    "runs": 403,
+    "wickets": 42,
+    "image_url": "https://randomuser.me/api/portraits/men/44.jpg",
+    "is_manual_override": false,
+    "batting": {
+      "average": 15.5,
+      "strike_rate": 82.92,
+      "high_score": 38,
+      "total_runs": 403,
+      "innings": 31,
+      "fours": 44,
+      "sixes": 3
+    },
+    "bowling": {
+      "wickets": 42,
+      "economy": 4.67,
+      "overs": 73.1,
+      "average": 11.2
+    },
+    "general": {
+      "dob": "2009-04-03",
+      "batting_style": "RHB",
+      "bowling_style": "Right-arm fast"
+    }
+  },
+  {
+    "external_id": "2",
+    "name": "Ashu Pathak",
+    "role": "All-Rounder",
+    "matches": 38,
+    "runs": 890,
+    "wickets": 24,
+    "image_url": "https://randomuser.me/api/portraits/men/32.jpg",
+    "is_manual_override": true,
+    "batting": {
+      "average": 34.2,
+      "strike_rate": 142.5,
+      "high_score": 88,
+      "total_runs": 890,
+      "innings": 35,
+      "fours": 90,
+      "sixes": 42
+    },
+    "bowling": {
+      "wickets": 24,
+      "economy": 6.8,
+      "overs": 80.0,
+      "average": 22.1
+    },
+    "general": {
+      "dob": "2000-01-01",
+      "batting_style": "LHB",
+      "bowling_style": "Slow left-arm orthodox"
+    }
+  },
+  {
+    "external_id": "3",
+    "name": "Vikram Singh",
+    "role": "Bowler",
+    "matches": 31,
+    "runs": 120,
+    "wickets": 45,
+    "image_url": "https://randomuser.me/api/portraits/men/65.jpg",
+    "is_manual_override": false,
+    "batting": {
+      "average": 8.5,
+      "strike_rate": 90.0,
+      "high_score": 15,
+      "total_runs": 120,
+      "innings": 20,
+      "fours": 10,
+      "sixes": 2
+    },
+    "bowling": {
+      "wickets": 45,
+      "economy": 5.2,
+      "overs": 95.0,
+      "average": 14.8
+    },
+    "general": {
+      "dob": "1995-12-12",
+      "batting_style": "RHB",
+      "bowling_style": "Right-arm fast-medium"
+    }
+  }
+]
