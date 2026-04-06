@@ -1,37 +1,9 @@
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
 import Player from "../models/Player.js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 export const getPlayers = async (req, res) => {
   try {
-    let players = await Player.find({}).sort({ matches: -1 });
-
-    if (!players || players.length === 0) {
-      console.log("No players found in DB, using JSON fallback");
-      const dataPath = path.join(__dirname, "../data/players.json");
-      const rawData = fs.readFileSync(dataPath, "utf-8");
-      const jsonPlayers = JSON.parse(rawData);
-
-      // Convert to mongoose docs and save to DB
-      await Promise.all(
-        jsonPlayers.map(async (p) => {
-          const existing = await Player.findOne({ external_id: p.external_id });
-          if (!existing) {
-            const playerDoc = new Player(p);
-            await playerDoc.save();
-          }
-        }),
-      );
-
-      // Fetch fresh from DB
-      players = await Player.find({}).sort({ matches: -1 });
-    }
-
-    res.json(players);
+    const players = await Player.find({}).sort({ matches: -1 });
+    res.json(players || []);
   } catch (error) {
     console.error(`Error fetching players: ${error.message}`);
     res.status(500).json({ message: "Server Error" });
