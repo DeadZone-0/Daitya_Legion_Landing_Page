@@ -12,15 +12,12 @@ const PolaroidFlash = ({ player, onDone }) => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {/* Full-screen white camera flash */}
       <motion.div
         className="absolute inset-0 bg-white"
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
       />
-
-      {/* Polaroid card slides up */}
       <motion.div
         className="relative flex flex-col items-center justify-center"
         initial={{ y: 80, opacity: 0, rotate: -3 }}
@@ -28,12 +25,10 @@ const PolaroidFlash = ({ player, onDone }) => {
         transition={{ delay: 0.2, duration: 0.55, ease: 'easeOut' }}
         onAnimationComplete={onDone}
       >
-        {/* Polaroid frame */}
         <div
           className="bg-white shadow-[0_20px_60px_rgba(0,0,0,0.9)] flex flex-col items-center"
           style={{ width: 220, padding: '12px 12px 40px 12px' }}
         >
-          {/* B&W player photo */}
           <div className="w-full overflow-hidden" style={{ height: 200 }}>
             <img
               src={player.image_url || 'https://via.placeholder.com/200'}
@@ -43,28 +38,14 @@ const PolaroidFlash = ({ player, onDone }) => {
               referrerPolicy="no-referrer"
             />
           </div>
-          {/* Caption */}
-          <span
-            className="mt-3 text-black font-black uppercase tracking-widest text-xs text-center"
-            style={{ fontFamily: 'monospace' }}
-          >
+          <span className="mt-3 text-black font-black uppercase tracking-widest text-xs text-center" style={{ fontFamily: 'monospace' }}>
             {player.name}
           </span>
-          <span
-            className="text-gray-500 uppercase tracking-widest text-[8px] mt-1"
-            style={{ fontFamily: 'monospace' }}
-          >
+          <span className="text-gray-500 uppercase tracking-widest text-[8px] mt-1" style={{ fontFamily: 'monospace' }}>
             DAITYA LEGION
           </span>
         </div>
-
-        {/* Shutter icon */}
-        <motion.div
-          className="mt-4"
-          initial={{ scale: 0 }}
-          animate={{ scale: [0, 1.4, 1] }}
-          transition={{ delay: 0.25, duration: 0.4 }}
-        >
+        <motion.div className="mt-4" initial={{ scale: 0 }} animate={{ scale: [0, 1.4, 1] }} transition={{ delay: 0.25, duration: 0.4 }}>
           <svg viewBox="0 0 24 24" width="28" height="28" fill="white" opacity="0.7">
             <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="1.5" fill="none"/>
             <circle cx="12" cy="12" r="5" fill="white"/>
@@ -86,7 +67,6 @@ const PlayerCard = ({ player }) => {
   }, [player.match_history]);
 
   const handleInsightClick = () => {
-    // Only polaroid on mobile
     if (window.innerWidth < 768) {
       setShowPolaroid(true);
     } else {
@@ -96,16 +76,9 @@ const PlayerCard = ({ player }) => {
 
   return (
     <>
-      {/* Polaroid flash overlay — mobile only */}
       <AnimatePresence>
         {showPolaroid && (
-          <PolaroidFlash
-            player={player}
-            onDone={() => {
-              setShowPolaroid(false);
-              setShowModal(true);
-            }}
-          />
+          <PolaroidFlash player={player} onDone={() => { setShowPolaroid(false); setShowModal(true); }} />
         )}
       </AnimatePresence>
 
@@ -124,7 +97,7 @@ const PlayerCard = ({ player }) => {
           <Shield className="w-4 h-4 text-white/50" />
         </div>
 
-        {/* Player Image Area */}
+        {/* Image Section */}
         <div className="relative w-full h-64 overflow-hidden bg-black/50">
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b10] via-transparent to-transparent z-10"></div>
           <img 
@@ -134,57 +107,67 @@ const PlayerCard = ({ player }) => {
             referrerPolicy="no-referrer" 
           />
           <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20"></div>
+          
+          {/* Title Badges */}
+          {player.titles && player.titles.length > 0 && (
+            <div className="absolute top-4 right-4 z-40 flex flex-col gap-2 items-end">
+              {player.titles.slice(0, 2).map((t, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ x: 20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 0.5 + i * 0.1 }}
+                  className="px-3 py-1.5 rounded-sm relative overflow-hidden shadow-[0_0_20px_rgba(201,153,31,0.4)] border border-[#c9991f]/40"
+                  style={{background: 'linear-gradient(135deg, #1a1a1a 0%, #3a2e0a 100%)'}}
+                >
+                  <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent)] translate-x-[-100%] animate-[shimmer_3s_infinite]" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#c9991f] drop-shadow-sm flex items-center gap-1.5 leading-none">
+                    <Trophy className="w-2.5 h-2.5" />
+                    {t}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
 
-        {/* Card Content */}
+        {/* Details Section */}
         <div className="p-4 sm:p-6 flex flex-col flex-1 relative z-10 -mt-10">
           <div className="text-center mb-4">
-            <h3 className="text-2xl sm:text-3xl font-black text-white glow-text-primary tracking-tighter uppercase italic leading-none truncate mb-2 drop-shadow-lg">{player.name}</h3>
-          <div className="flex flex-wrap items-center justify-center gap-1.5 mt-1">
+            <h2 className="text-2xl sm:text-3xl font-black text-white glow-text-primary tracking-tighter uppercase italic leading-none truncate mb-2 drop-shadow-lg">{player.name}</h2>
+            <div className="flex justify-center mt-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/20 border border-primary/30 rounded-sm">
                 <Crosshair className="w-3 h-3 text-primary" />
                 <span className="text-[10px] font-black uppercase text-primary tracking-widest">{player.role}</span>
               </div>
-              {player.titles && player.titles.length > 0 && player.titles.slice(0, 3).map((t, i) => (
-                i === 0 ? (
-                  <div key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm relative overflow-hidden" style={{background: 'linear-gradient(90deg, #78570a, #c9991f, #78570a)', backgroundSize: '200% 100%'}}>
-                    <span className="text-[8px] font-black uppercase text-amber-100 tracking-widest relative z-10">✦ {t}</span>
-                    <div className="absolute inset-0 opacity-40" style={{background: 'linear-gradient(90deg, transparent 0%, rgba(255,220,100,0.6) 50%, transparent 100%)', backgroundSize: '200% 100%', animation: 'shimmer 2.5s infinite'}} />
-                  </div>
-                ) : (
-                  <div key={i} className="inline-flex items-center px-2 py-1 bg-white/[0.06] border border-white/[0.12] rounded-sm">
-                    <span className="text-[8px] font-black uppercase tracking-widest" style={{color: '#b0b8c4'}}>· {t}</span>
-                  </div>
-                )
-              ))}
             </div>
           </div>
 
           <div className="w-full grid grid-cols-2 gap-x-4 gap-y-4 mb-6">
-             <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-primary/20 transition-colors">
-               <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Batting Avg</span>
-               <span className="text-xl font-black text-white italic tracking-tighter flex items-center gap-1 mt-1"><Zap className="w-3 h-3 text-primary"/> {player.batting?.average || '0.00'}</span>
-             </div>
-             <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-primary/20 transition-colors">
-               <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">S. Rate</span>
-               <span className="text-xl font-black text-white italic tracking-tighter leading-none mt-1">{player.batting?.strike_rate || '0.00'}</span>
-             </div>
-             <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-red-900/20 transition-colors">
-               <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Wickets</span>
-               <span className="text-xl font-black text-red-500 italic tracking-tighter flex items-center gap-1 mt-1"><Target className="w-3 h-3 text-red-700"/> {player.wickets || 0}</span>
-             </div>
-             <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-red-900/20 transition-colors">
-               <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Economy</span>
-               <span className="text-xl font-black text-red-500 italic tracking-tighter leading-none mt-1">{player.bowling?.economy || '0.00'}</span>
-             </div>
-             <div className="flex col-span-2 justify-between items-center bg-white/5 p-3 rounded-sm border border-white/5 mt-[-6px]">
-               <span className="text-[8px] sm:text-[9px] font-black uppercase text-gray-500 tracking-widest flex items-center gap-1"><Crosshair className="w-3 h-3 text-gray-500" /> Fielding</span>
-               <span className="text-base sm:text-lg font-black text-gray-300 italic tracking-tighter leading-none">{player.catches || 0} C <span className="text-[12px] not-italic text-gray-600">/</span> {player.run_outs || 0} RO</span>
-             </div>
-             <div className="flex col-span-2 justify-between items-center bg-primary/5 p-3 rounded-sm border border-primary/10 mt-[-6px]">
-               <span className="text-[8px] sm:text-[9px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-1"><Activity className="w-3 h-3 text-primary" /> Win Ratio</span>
-               <span className="text-base sm:text-lg font-black text-primary italic tracking-tighter leading-none">{winRate}% <span className="text-[8px] not-italic text-gray-600">({player.matches || 0} Matches)</span></span>
-             </div>
+            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-primary/20 transition-colors">
+              <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Batting Avg</span>
+              <span className="text-xl font-black text-white italic tracking-tighter flex items-center gap-1 mt-1"><Zap className="w-3 h-3 text-primary"/> {player.batting?.average || '0.00'}</span>
+            </div>
+            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-primary/20 transition-colors">
+              <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">S. Rate</span>
+              <span className="text-xl font-black text-white italic tracking-tighter leading-none mt-1">{player.batting?.strike_rate || '0.00' }</span>
+            </div>
+            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-red-900/20 transition-colors">
+              <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Wickets</span>
+              <span className="text-xl font-black text-red-500 italic tracking-tighter flex items-center gap-1 mt-1"><Target className="w-3 h-3 text-red-700"/> {player.wickets || 0}</span>
+            </div>
+            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-red-900/20 transition-colors">
+              <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Economy</span>
+              <span className="text-xl font-black text-red-500 italic tracking-tighter leading-none mt-1">{player.bowling?.economy || '0.00'}</span>
+            </div>
+            <div className="flex col-span-2 justify-between items-center bg-white/5 p-3 rounded-sm border border-white/5 mt-[-6px]">
+              <span className="text-[8px] sm:text-[9px] font-black uppercase text-gray-500 tracking-widest flex items-center gap-1"><Crosshair className="w-3 h-3 text-gray-500" /> Fielding</span>
+              <span className="text-base sm:text-lg font-black text-gray-300 italic tracking-tighter leading-none">{player.catches || 0} C <span className="text-[12px] not-italic text-gray-600">/</span> {player.run_outs || 0} RO</span>
+            </div>
+            <div className="flex col-span-2 justify-between items-center bg-primary/5 p-3 rounded-sm border border-primary/10 mt-[-6px]">
+              <span className="text-[8px] sm:text-[9px] font-black uppercase text-gray-400 tracking-widest flex items-center gap-1"><Activity className="w-3 h-3 text-primary" /> Win Ratio</span>
+              <span className="text-base sm:text-lg font-black text-primary italic tracking-tighter leading-none">{winRate}% <span className="text-[8px] not-italic text-gray-600">({player.matches || 0} Matches)</span></span>
+            </div>
           </div>
 
           <div className="mt-auto">
@@ -201,10 +184,7 @@ const PlayerCard = ({ player }) => {
 
       <AnimatePresence>
         {showModal && (
-          <PlayerDetailsModal 
-            player={player} 
-            onClose={() => setShowModal(false)} 
-          />
+          <PlayerDetailsModal player={player} onClose={() => setShowModal(false)} />
         )}
       </AnimatePresence>
     </>

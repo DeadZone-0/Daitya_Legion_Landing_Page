@@ -35,9 +35,20 @@ export default async function handler(req, res) {
   }
 
   // PUT update player
-  if (req.method === "PUT" && req.params?.id) {
+  if (req.method === "PUT") {
     try {
-      req.file = null;
+      const id = req.query.id || req.params?.id;
+      if (!id) return res.status(400).json({ message: "Player ID required" });
+      
+      // Ensure req.params has id for the controller
+      req.params = { ...req.params, id };
+
+      // Handle both 'titles' and 'titles[]' from FormData
+      if (req.body['titles[]'] && !req.body.titles) {
+        req.body.titles = req.body['titles[]'];
+      }
+
+      req.file = null; 
       return updatePlayer(req, res);
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -45,8 +56,12 @@ export default async function handler(req, res) {
   }
 
   // DELETE player
-  if (req.method === "DELETE" && req.params?.id) {
+  if (req.method === "DELETE") {
     try {
+      const id = req.query.id || req.params?.id;
+      if (!id) return res.status(400).json({ message: "Player ID required" });
+      
+      req.params = { ...req.params, id };
       return deletePlayer(req, res);
     } catch (error) {
       res.status(400).json({ message: error.message });

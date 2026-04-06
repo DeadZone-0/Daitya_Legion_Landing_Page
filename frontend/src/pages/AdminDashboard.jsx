@@ -1227,28 +1227,48 @@ const AdminDashboard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSyncStatus("syncing");
-    const payload = new FormData();
+
     // Serialize titles: convert comma-separated string → array
     const titlesArr = formData.titles
-      ? formData.titles.split(",").map(t => t.trim()).filter(Boolean)
+      ? String(formData.titles).split(",").map(t => t.trim()).filter(Boolean)
       : [];
-    Object.keys(formData).forEach((k) => {
-      if (k === "titles") {
-        titlesArr.forEach(t => payload.append("titles[]", t));
-      } else {
-        payload.append(k, formData[k]);
-      }
-    });
-    if (imageFile) payload.append("image", imageFile);
+
+    let body;
+    let headers = { Authorization: `Bearer ${token}` };
+
+    if (imageFile) {
+      // Use FormData for image uploads
+      const payload = new FormData();
+      Object.keys(formData).forEach((k) => {
+        if (k === "titles") {
+          titlesArr.forEach(t => payload.append("titles[]", t));
+        } else {
+          payload.append(k, formData[k]);
+        }
+      });
+      payload.append("image", imageFile);
+      body = payload;
+      // Browser automatically sets multi-part boundary for FormData
+    } else {
+      // Use JSON for simple data updates (more reliable on Vercel)
+      headers["Content-Type"] = "application/json";
+      body = JSON.stringify({
+        ...formData,
+        titles: titlesArr
+      });
+    }
+
     try {
       const url = editingPlayer
         ? `${API_BASE_URL}/api/players/${editingPlayer._id}`
         : `${API_BASE_URL}/api/players`;
+      
       const res = await fetch(url, {
         method: editingPlayer ? "PUT" : "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: payload,
+        headers,
+        body,
       });
+
       if (res.ok) {
         const saved = await res.json();
         setPlayers(
