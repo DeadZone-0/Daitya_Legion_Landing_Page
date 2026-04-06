@@ -1460,10 +1460,9 @@ const AdminDashboard = () => {
                   </tbody>
                 </table>
               </div>
+              {/* ── Best Win Settings ───────────────────────── */}
+              <BestWinSettings token={token} API_BASE_URL={API_BASE_URL} />
             </div>
-
-            {/* ── Best Win Settings ───────────────────────── */}
-            <BestWinSettings token={token} API_BASE_URL={API_BASE_URL} />
           )}
         </div>
       </main>
