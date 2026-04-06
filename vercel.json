@@ -19,9 +19,28 @@
     }
   },
   "ignore": [
-    "backend/node_modules/**",
-    "backend/scripts/**",
-    "backend/jobs/**",
     "backend/data/**"
+  ],
+  "rewrites": [
+    {
+      "source": "/api/players",
+      "destination": "/api/players/route.js"
+    },
+    {
+      "source": "/api/players/:id",
+      "destination": "/api/players/route.js?id=:id"
+    },
+    {
+      "source": "/api/matches",
+      "destination": "/api/matches/route.js"
+    },
+    {
+      "source": "/api/matches/:id",
+      "destination": "/api/matches/route.js?id=:id"
+    },
+    {
+      "source": "/api/team",
+      "destination": "/api/team/route.js"
+    }
   ]
 }

@@ -40,14 +40,16 @@ export const getPlayers = async (req, res) => {
 
 export const createPlayer = async (req, res) => {
   try {
-    const { name, role, matches, runs, wickets, external_id, titles } = req.body;
+    const { name, role, matches, runs, wickets, external_id } = req.body;
+    // Handle both 'titles' and 'titles[]' from FormData
+    const titles = req.body.titles || req.body['titles[]'];
     let image_url = "";
 
     if (req.file) {
       image_url = req.file.path;
     }
 
-    // titles might come as an array from titles[] or a string
+    // titles might come as an array or a string
     const titlesArray = Array.isArray(titles) ? titles : (titles ? [titles] : []);
 
     const player = new Player({
@@ -71,7 +73,9 @@ export const createPlayer = async (req, res) => {
 
 export const updatePlayer = async (req, res) => {
   try {
-    const { name, role, matches, runs, wickets, titles, external_id } = req.body;
+    const { name, role, matches, runs, wickets, external_id } = req.body;
+    // Handle both 'titles' and 'titles[]' from FormData
+    const titles = req.body.titles || req.body['titles[]'];
     const player = await Player.findById(req.params.id);
 
     if (player) {
