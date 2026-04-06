@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Trophy, Home } from 'lucide-react';
 import AudioConsole from './AudioConsole.jsx';
-import TeamLogo from '../assets/Daitya_Legion_LOGO.png';
+
 
 const Navbar = () => {
   const location = useLocation();
@@ -41,7 +41,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2 sm:gap-4 group">
           <div className="flex-shrink-0 w-9 h-9 sm:w-14 sm:h-14 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
             <img
-              src={TeamLogo}
+              src="/logo.png"
               alt="Daitya Legion Official Logo"
               className="h-full w-auto object-contain drop-shadow-[0_0_15px_rgba(136,8,8,0.5)]"
               onError={(e) => { e.target.src = 'https://cricheroes.com/assets/images/team-profile-placeholder.png'; }}

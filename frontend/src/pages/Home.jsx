@@ -204,17 +204,37 @@ const Home = () => {
                 </h3>
               </div>
               {teamStats.best_win && (
-                <div className="hidden lg:flex items-center gap-5 glass-panel px-6 py-3 border-primary/20 bg-primary/5">
-                  <Trophy className="w-5 h-5 text-primary" />
-                  <div>
-                    <span className="text-[7px] font-black uppercase text-gray-600 tracking-widest block mb-1">
-                      Best Win
-                    </span>
-                    <span className="text-sm font-black text-white tracking-tighter italic uppercase italic">
-                      "{teamStats.best_win}"
-                    </span>
+                teamStats.best_win_url ? (
+                  <a
+                    href={teamStats.best_win_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hidden lg:flex items-center gap-5 glass-panel px-6 py-3 border-primary/20 bg-primary/5 hover:border-primary/60 hover:bg-primary/10 transition-all cursor-pointer group"
+                  >
+                    <Trophy className="w-5 h-5 text-primary" />
+                    <div>
+                      <span className="text-[7px] font-black uppercase text-gray-600 tracking-widest block mb-1">
+                        Best Win
+                      </span>
+                      <span className="text-sm font-black text-white tracking-tighter italic uppercase">
+                        "{teamStats.best_win}"
+                      </span>
+                    </div>
+                    <ExternalLink className="w-3 h-3 text-primary/60 group-hover:text-primary transition-colors" />
+                  </a>
+                ) : (
+                  <div className="hidden lg:flex items-center gap-5 glass-panel px-6 py-3 border-primary/20 bg-primary/5">
+                    <Trophy className="w-5 h-5 text-primary" />
+                    <div>
+                      <span className="text-[7px] font-black uppercase text-gray-600 tracking-widest block mb-1">
+                        Best Win
+                      </span>
+                      <span className="text-sm font-black text-white tracking-tighter italic uppercase">
+                        "{teamStats.best_win}"
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )
               )}
             </div>
 

@@ -140,15 +140,22 @@ const PlayerCard = ({ player }) => {
         <div className="p-4 sm:p-6 flex flex-col flex-1 relative z-10 -mt-10">
           <div className="text-center mb-4">
             <h3 className="text-2xl sm:text-3xl font-black text-white glow-text-primary tracking-tighter uppercase italic leading-none truncate mb-2 drop-shadow-lg">{player.name}</h3>
-            <div className="flex flex-wrap items-center justify-center gap-1.5">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 mt-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/20 border border-primary/30 rounded-sm">
                 <Crosshair className="w-3 h-3 text-primary" />
                 <span className="text-[10px] font-black uppercase text-primary tracking-widest">{player.role}</span>
               </div>
-              {player.titles && player.titles.length > 0 && player.titles.slice(0,2).map((t, i) => (
-                <div key={i} className="inline-flex items-center px-2 py-1 bg-white/5 border border-white/10 rounded-sm">
-                  <span className="text-[8px] font-black uppercase text-gray-400 tracking-widest">{t}</span>
-                </div>
+              {player.titles && player.titles.length > 0 && player.titles.slice(0, 3).map((t, i) => (
+                i === 0 ? (
+                  <div key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-sm relative overflow-hidden" style={{background: 'linear-gradient(90deg, #78570a, #c9991f, #78570a)', backgroundSize: '200% 100%'}}>
+                    <span className="text-[8px] font-black uppercase text-amber-100 tracking-widest relative z-10">✦ {t}</span>
+                    <div className="absolute inset-0 opacity-40" style={{background: 'linear-gradient(90deg, transparent 0%, rgba(255,220,100,0.6) 50%, transparent 100%)', backgroundSize: '200% 100%', animation: 'shimmer 2.5s infinite'}} />
+                  </div>
+                ) : (
+                  <div key={i} className="inline-flex items-center px-2 py-1 bg-white/[0.06] border border-white/[0.12] rounded-sm">
+                    <span className="text-[8px] font-black uppercase tracking-widest" style={{color: '#b0b8c4'}}>· {t}</span>
+                  </div>
+                )
               ))}
             </div>
           </div>

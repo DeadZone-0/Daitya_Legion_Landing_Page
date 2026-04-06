@@ -14,6 +14,7 @@ const teamSchema = new mongoose.Schema(
     win_percentage: { type: String, default: "0%" },
     best_win: { type: String, default: "" },
     best_win_margin: { type: Number, default: 0 },
+    best_win_url: { type: String, default: "" },
     last_updated: { type: Date, default: Date.now }
   },
   { timestamps: true }

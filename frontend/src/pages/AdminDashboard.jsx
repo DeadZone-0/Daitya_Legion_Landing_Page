@@ -6,10 +6,13 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
+  Crop,
   Edit3,
+  ExternalLink,
   Lightbulb,
   LogOut,
   MapPin,
+  Minus,
   Plus,
   RefreshCcw,
   Shield,
@@ -21,10 +24,126 @@ import {
   X,
   Zap
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config.js";
 import PlayerCard from "../components/PlayerCard.jsx";
+
+/* ─────────────────────────────────────────────
+   IMAGE CROPPER MODAL
+───────────────────────────────────────────── */
+const ImageCropperModal = ({ imageSrc, onCancel, onCrop }) => {
+  const canvasRef = useRef(null);
+  const imgRef = useRef(null);
+  const [zoom, setZoom] = useState(1);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [dragging, setDragging] = useState(false);
+  const dragStart = useRef(null);
+  const CROP_SIZE = 320;
+
+  const draw = useCallback(() => {
+    const canvas = canvasRef.current;
+    const img = imgRef.current;
+    if (!canvas || !img) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, CROP_SIZE, CROP_SIZE);
+    const iw = img.naturalWidth * zoom;
+    const ih = img.naturalHeight * zoom;
+    ctx.drawImage(img, offset.x, offset.y, iw, ih);
+  }, [zoom, offset]);
+
+  useEffect(() => { draw(); }, [draw]);
+
+  const handleMouseDown = (e) => {
+    setDragging(true);
+    dragStart.current = { x: e.clientX - offset.x, y: e.clientY - offset.y };
+  };
+  const handleMouseMove = (e) => {
+    if (!dragging) return;
+    setOffset({ x: e.clientX - dragStart.current.x, y: e.clientY - dragStart.current.y });
+  };
+  const handleMouseUp = () => setDragging(false);
+  const handleTouchStart = (e) => {
+    const t = e.touches[0];
+    setDragging(true);
+    dragStart.current = { x: t.clientX - offset.x, y: t.clientY - offset.y };
+  };
+  const handleTouchMove = (e) => {
+    if (!dragging) return;
+    const t = e.touches[0];
+    setOffset({ x: t.clientX - dragStart.current.x, y: t.clientY - dragStart.current.y });
+  };
+
+  const handleApply = () => {
+    const canvas = canvasRef.current;
+    canvas.toBlob((blob) => {
+      const file = new File([blob], 'cropped_player.jpg', { type: 'image/jpeg' });
+      onCrop(file, URL.createObjectURL(blob));
+    }, 'image/jpeg', 0.92);
+  };
+
+  return (
+    <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4">
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        className="bg-[#08090d] border border-white/10 p-6 flex flex-col items-center gap-6 max-w-md w-full"
+      >
+        <div className="flex items-center gap-3 self-start">
+          <div className="w-1 h-8 bg-primary" />
+          <div>
+            <h3 className="text-xl font-black italic tracking-tighter uppercase">Crop <span className="text-primary not-italic">Photo</span></h3>
+            <p className="text-[9px] font-black text-gray-600 uppercase tracking-[0.4em]">Drag to reposition · Scroll to zoom</p>
+          </div>
+        </div>
+
+        {/* Canvas crop viewport */}
+        <div
+          className="relative overflow-hidden border-2 border-primary/30 cursor-grab active:cursor-grabbing"
+          style={{ width: CROP_SIZE, height: CROP_SIZE }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleMouseUp}
+          onWheel={(e) => setZoom(z => Math.max(0.3, Math.min(4, z - e.deltaY * 0.001)))}
+        >
+          <canvas ref={canvasRef} width={CROP_SIZE} height={CROP_SIZE} className="block" />
+          {/* Grid overlay */}
+          <div className="pointer-events-none absolute inset-0" style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px)',
+            backgroundSize: `${CROP_SIZE/3}px ${CROP_SIZE/3}px`
+          }} />
+          <div className="pointer-events-none absolute inset-0 border-2 border-primary/20" />
+          {/* Hidden img for drawing */}
+          <img ref={imgRef} src={imageSrc} className="hidden" onLoad={draw} alt="crop source" crossOrigin="anonymous" />
+        </div>
+
+        {/* Zoom slider */}
+        <div className="flex items-center gap-4 w-full">
+          <Minus className="w-4 h-4 text-gray-600 cursor-pointer hover:text-primary" onClick={() => setZoom(z => Math.max(0.3, z - 0.1))} />
+          <input
+            type="range" min="0.3" max="4" step="0.05"
+            value={zoom}
+            onChange={e => setZoom(parseFloat(e.target.value))}
+            className="flex-1 accent-red-700 cursor-pointer"
+          />
+          <Plus className="w-4 h-4 text-gray-600 cursor-pointer hover:text-primary" onClick={() => setZoom(z => Math.min(4, z + 0.1))} />
+          <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest w-12 text-right">{Math.round(zoom * 100)}%</span>
+        </div>
+
+        <div className="flex gap-4 w-full">
+          <button onClick={onCancel} className="flex-1 py-3 border border-white/10 bg-white/5 text-gray-400 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white/10 transition-all">Cancel</button>
+          <button onClick={handleApply} className="flex-1 py-3 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-primary border border-primary transition-all flex items-center justify-center gap-2">
+            <Crop className="w-3.5 h-3.5" /> Apply Crop
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 /* ─────────────────────────────────────────────
    MATCH LOG TAB
@@ -768,6 +887,108 @@ const MatchLogTab = ({ players, API_BASE_URL, token }) => {
 };
 
 /* ─────────────────────────────────────────────
+   BEST WIN SETTINGS
+───────────────────────────────────────────── */
+const BestWinSettings = ({ token, API_BASE_URL }) => {
+  const [team, setTeam] = useState({ best_win: "", best_win_url: "" });
+  const [saving, setSaving] = useState(false);
+  const [status, setStatus] = useState("idle");
+
+  useEffect(() => {
+    fetchTeam();
+  }, []);
+
+  const fetchTeam = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/team`);
+      const data = await res.json();
+      setTeam({
+        best_win: data.best_win || "",
+        best_win_url: data.best_win_url || ""
+      });
+    } catch (e) { console.error(e); }
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    setStatus("saving");
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/team`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(team)
+      });
+      if (res.ok) setStatus("success");
+      else setStatus("error");
+    } catch (e) { setStatus("error"); }
+    finally {
+      setSaving(false);
+      setTimeout(() => setStatus("idle"), 2000);
+    }
+  };
+
+  return (
+    <div className="mt-12 p-6 md:p-8 bg-black/40 border border-white/5 rounded-sm relative overflow-hidden group hover:border-primary/20 transition-all">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-1 h-10 bg-primary" />
+        <div>
+          <h3 className="text-xl md:text-2xl font-black italic tracking-tighter uppercase leading-none">
+            Team <span className="text-primary not-italic">Settings</span>
+          </h3>
+          <p className="text-[9px] font-black text-gray-700 uppercase tracking-[0.5em] mt-1">
+            Global Team Identity & Best Win Reference
+          </p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <div className="space-y-2">
+          <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
+            Best Win Description
+          </label>
+          <input
+            value={team.best_win}
+            placeholder="e.g. 52 Runs against Thunder XI"
+            onChange={e => setTeam({ ...team, best_win: e.target.value })}
+            className="w-full bg-black border border-white/10 py-4 px-5 text-white text-sm font-bold uppercase tracking-widest focus:border-primary/50 outline-none transition-all placeholder:text-gray-900"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
+            CricHeroes Match URL
+          </label>
+          <div className="relative">
+            <input
+              value={team.best_win_url}
+              placeholder="https://cricheroes.com/match/..."
+              onChange={e => setTeam({ ...team, best_win_url: e.target.value })}
+              className="w-full bg-black border border-white/10 py-4 px-5 text-white text-xs font-bold focus:border-primary/50 outline-none transition-all placeholder:text-gray-900"
+            />
+            {team.best_win_url && (
+              <a href={team.best_win_url} target="_blank" rel="noopener noreferrer" className="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:text-white transition-colors">
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <button
+        onClick={handleSave}
+        disabled={saving}
+        className="flex items-center gap-3 px-8 py-4 bg-primary/10 border border-primary/40 text-primary text-[10px] font-black uppercase tracking-[0.4em] hover:bg-primary hover:text-white transition-all disabled:opacity-50"
+      >
+        {status === "saving" ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Trophy className="w-4 h-4" />}
+        {status === "success" ? "Settings Synced" : status === "error" ? "Sync Failed" : "Update Team Settings"}
+      </button>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────────
    MAIN ADMIN DASHBOARD
 ───────────────────────────────────────────── */
 const AdminDashboard = () => {
@@ -784,9 +1005,12 @@ const AdminDashboard = () => {
     runs: 0,
     wickets: 0,
     external_id: "",
+    titles: "",
   });
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
+  const [cropSource, setCropSource] = useState(null);
+  const [showCropper, setShowCropper] = useState(false);
 
   const [matches, setMatches] = useState([]);
   const token =
@@ -827,9 +1051,17 @@ const AdminDashboard = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      const url = URL.createObjectURL(file);
+      setCropSource(url);
+      setShowCropper(true);
     }
+  };
+
+  const handleCropDone = (croppedFile, croppedUrl) => {
+    setImageFile(croppedFile);
+    setPreviewUrl(croppedUrl);
+    setShowCropper(false);
+    setCropSource(null);
   };
 
   const resetForm = () => {
@@ -840,9 +1072,12 @@ const AdminDashboard = () => {
       runs: 0,
       wickets: 0,
       external_id: "",
+      titles: "",
     });
     setImageFile(null);
     setPreviewUrl("");
+    setCropSource(null);
+    setShowCropper(false);
     setEditingPlayer(null);
     setIsFormOpen(false);
   };
@@ -856,6 +1091,7 @@ const AdminDashboard = () => {
       runs: player.runs,
       wickets: player.wickets,
       external_id: player.external_id || "",
+      titles: Array.isArray(player.titles) ? player.titles.join(", ") : "",
     });
     setPreviewUrl(
       player.image_url
@@ -891,7 +1127,17 @@ const AdminDashboard = () => {
     e.preventDefault();
     setSyncStatus("syncing");
     const payload = new FormData();
-    Object.keys(formData).forEach((k) => payload.append(k, formData[k]));
+    // Serialize titles: convert comma-separated string → array
+    const titlesArr = formData.titles
+      ? formData.titles.split(",").map(t => t.trim()).filter(Boolean)
+      : [];
+    Object.keys(formData).forEach((k) => {
+      if (k === "titles") {
+        titlesArr.forEach(t => payload.append("titles[]", t));
+      } else {
+        payload.append(k, formData[k]);
+      }
+    });
     if (imageFile) payload.append("image", imageFile);
     try {
       const url = editingPlayer
@@ -1215,6 +1461,9 @@ const AdminDashboard = () => {
                 </table>
               </div>
             </div>
+
+            {/* ── Best Win Settings ───────────────────────── */}
+            <BestWinSettings token={token} API_BASE_URL={API_BASE_URL} />
           )}
         </div>
       </main>
@@ -1330,8 +1579,46 @@ const AdminDashboard = () => {
 
                   <div className="space-y-2">
                     <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
+                      CricHeroes Titles <span className="text-gray-600 normal-case font-medium tracking-normal">(comma-separated, e.g. Aspirant, Classicist)</span>
+                    </label>
+                    <input
+                      name="titles"
+                      value={formData.titles}
+                      placeholder="Aspirant, Classicist, Maverick..."
+                      onChange={handleChange}
+                      className="w-full bg-black border border-amber-900/30 py-4 px-5 text-amber-200 text-sm font-bold tracking-widest focus:border-amber-600/50 outline-none transition-all"
+                    />
+                    {formData.titles && (
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {formData.titles.split(',').map(t => t.trim()).filter(Boolean).map((t, i) => (
+                          <span key={i} className={`px-2.5 py-1 rounded-sm text-[8px] font-black uppercase tracking-widest ${
+                            i === 0
+                              ? 'text-amber-100'
+                              : 'text-[#b0b8c4] bg-white/[0.06] border border-white/[0.12]'
+                          }`} style={i === 0 ? {background: 'linear-gradient(90deg,#78570a,#c9991f,#78570a)'} : {}}>
+                            {i === 0 ? '✦ ' : '· '}{t}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
                       Player Photo
                     </label>
+                    {previewUrl && (
+                      <div className="relative mb-3 inline-block">
+                        <img src={previewUrl} alt="Preview" className="w-32 h-32 object-cover object-top border border-primary/30" />
+                        <button
+                          type="button"
+                          onClick={() => { setCropSource(previewUrl); setShowCropper(true); }}
+                          className="absolute bottom-1 right-1 px-2 py-1 bg-black/80 border border-white/20 text-[8px] font-black uppercase tracking-widest text-gray-300 hover:text-primary flex items-center gap-1 transition-colors"
+                        >
+                          <Crop className="w-2.5 h-2.5" /> Re-crop
+                        </button>
+                      </div>
+                    )}
                     <div className="relative group/upload">
                       <input
                         type="file"
@@ -1386,6 +1673,15 @@ const AdminDashboard = () => {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Image Cropper Modal */}
+      {showCropper && cropSource && (
+        <ImageCropperModal
+          imageSrc={cropSource}
+          onCancel={() => { setShowCropper(false); setCropSource(null); }}
+          onCrop={handleCropDone}
+        />
+      )}
     </div>
   );
 };
