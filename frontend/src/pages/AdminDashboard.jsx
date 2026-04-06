@@ -46,13 +46,24 @@ const ImageCropperModal = ({ imageSrc, onCancel, onCrop }) => {
     const img = imgRef.current;
     if (!canvas || !img) return;
     const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, CROP_SIZE, CROP_SIZE);
+    
+    // Create a circular clipping path or just a clean square for now
+    ctx.fillStyle = "#050505";
+    ctx.fillRect(0, 0, CROP_SIZE, CROP_SIZE);
+    
     const iw = img.naturalWidth * zoom;
     const ih = img.naturalHeight * zoom;
     ctx.drawImage(img, offset.x, offset.y, iw, ih);
+    
+    // Optional: Add a subtle vignette or scanlines on top of the preview
   }, [zoom, offset]);
 
   useEffect(() => { draw(); }, [draw]);
+
+  const handleReset = () => {
+    setZoom(1);
+    setOffset({ x: 0, y: 0 });
+  };
 
   const handleMouseDown = (e) => {
     setDragging(true);
@@ -63,13 +74,14 @@ const ImageCropperModal = ({ imageSrc, onCancel, onCrop }) => {
     setOffset({ x: e.clientX - dragStart.current.x, y: e.clientY - dragStart.current.y });
   };
   const handleMouseUp = () => setDragging(false);
+  
   const handleTouchStart = (e) => {
     const t = e.touches[0];
     setDragging(true);
     dragStart.current = { x: t.clientX - offset.x, y: t.clientY - offset.y };
   };
   const handleTouchMove = (e) => {
-    if (!dragging) return;
+    if (!dragging || !e.touches[0]) return;
     const t = e.touches[0];
     setOffset({ x: t.clientX - dragStart.current.x, y: t.clientY - dragStart.current.y });
   };
@@ -79,67 +91,127 @@ const ImageCropperModal = ({ imageSrc, onCancel, onCrop }) => {
     canvas.toBlob((blob) => {
       const file = new File([blob], 'cropped_player.jpg', { type: 'image/jpeg' });
       onCrop(file, URL.createObjectURL(blob));
-    }, 'image/jpeg', 0.92);
+    }, 'image/jpeg', 0.95);
   };
 
   return (
-    <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/95 backdrop-blur-xl p-4">
+    <div className="fixed inset-0 z-[500] flex items-center justify-center bg-black/98 backdrop-blur-2xl p-4">
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-[#08090d] border border-white/10 p-6 flex flex-col items-center gap-6 max-w-md w-full"
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        className="bg-[#0a0b10] border border-white/5 p-8 flex flex-col items-center gap-8 max-w-lg w-full relative overflow-hidden shadow-[0_0_100px_rgba(0,0,0,1)]"
       >
-        <div className="flex items-center gap-3 self-start">
-          <div className="w-1 h-8 bg-primary" />
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        
+        <div className="flex items-center gap-4 self-start">
+          <div className="w-1 h-12 bg-primary shadow-[0_0_15px_rgba(239,35,60,0.5)]" />
           <div>
-            <h3 className="text-xl font-black italic tracking-tighter uppercase">Crop <span className="text-primary not-italic">Photo</span></h3>
-            <p className="text-[9px] font-black text-gray-600 uppercase tracking-[0.4em]">Drag to reposition · Scroll to zoom</p>
+            <h3 className="text-2xl font-black italic tracking-tighter uppercase leading-none">
+              Tactical <span className="text-primary not-italic">Crop</span>
+            </h3>
+            <p className="text-[10px] font-black text-gray-700 uppercase tracking-[0.5em] mt-1 italic">
+              Positioning System Active
+            </p>
           </div>
         </div>
 
-        {/* Canvas crop viewport */}
-        <div
-          className="relative overflow-hidden border-2 border-primary/30 cursor-grab active:cursor-grabbing"
-          style={{ width: CROP_SIZE, height: CROP_SIZE }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleMouseUp}
-          onWheel={(e) => setZoom(z => Math.max(0.3, Math.min(4, z - e.deltaY * 0.001)))}
-        >
-          <canvas ref={canvasRef} width={CROP_SIZE} height={CROP_SIZE} className="block" />
-          {/* Grid overlay */}
-          <div className="pointer-events-none absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px)',
-            backgroundSize: `${CROP_SIZE/3}px ${CROP_SIZE/3}px`
-          }} />
-          <div className="pointer-events-none absolute inset-0 border-2 border-primary/20" />
-          {/* Hidden img for drawing */}
-          <img ref={imgRef} src={imageSrc} className="hidden" onLoad={draw} alt="crop source" crossOrigin="anonymous" />
+        {/* Viewport Container */}
+        <div className="relative p-1 bg-white/5 border border-white/10 group">
+          <div
+            className="relative overflow-hidden cursor-grab active:cursor-grabbing bg-black select-none"
+            style={{ width: CROP_SIZE, height: CROP_SIZE }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleMouseUp}
+            onWheel={(e) => {
+              e.preventDefault();
+              setZoom(z => Math.max(0.2, Math.min(5, z - e.deltaY * 0.001)));
+            }}
+          >
+            <canvas ref={canvasRef} width={CROP_SIZE} height={CROP_SIZE} className="block" />
+            
+            {/* Visual Overlays */}
+            <div className="pointer-events-none absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <div className="w-full h-[1px] bg-primary/10" />
+              <div className="h-full w-[1px] bg-primary/10 absolute" />
+            </div>
+            
+            {/* Corner Brackets */}
+            <div className="absolute top-4 left-4 w-4 h-4 border-t-2 border-l-2 border-primary/40" />
+            <div className="absolute top-4 right-4 w-4 h-4 border-t-2 border-r-2 border-primary/40" />
+            <div className="absolute bottom-4 left-4 w-4 h-4 border-b-2 border-l-2 border-primary/40" />
+            <div className="absolute bottom-4 right-4 w-4 h-4 border-b-2 border-r-2 border-primary/40" />
+            
+            {/* Instructions Overlay */}
+            <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 border border-white/10 pointer-events-none">
+              <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none">
+                {Math.round(zoom * 100)}% MAGNIFICATION
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Zoom slider */}
-        <div className="flex items-center gap-4 w-full">
-          <Minus className="w-4 h-4 text-gray-600 cursor-pointer hover:text-primary" onClick={() => setZoom(z => Math.max(0.3, z - 0.1))} />
-          <input
-            type="range" min="0.3" max="4" step="0.05"
-            value={zoom}
-            onChange={e => setZoom(parseFloat(e.target.value))}
-            className="flex-1 accent-red-700 cursor-pointer"
-          />
-          <Plus className="w-4 h-4 text-gray-600 cursor-pointer hover:text-primary" onClick={() => setZoom(z => Math.min(4, z + 0.1))} />
-          <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest w-12 text-right">{Math.round(zoom * 100)}%</span>
+        {/* Controls */}
+        <div className="w-full space-y-6">
+          <div className="flex items-center gap-6">
+            <button 
+              onClick={() => setZoom(z => Math.max(0.2, z - 0.2))}
+              className="w-10 h-10 flex items-center justify-center bg-white/5 border border-white/10 hover:bg-primary/20 hover:border-primary/40 transition-all text-gray-400 hover:text-white"
+            >
+              <Minus className="w-4 h-4" />
+            </button>
+            <div className="flex-1 space-y-2">
+              <input
+                type="range" min="0.2" max="5" step="0.01"
+                value={zoom}
+                onChange={e => setZoom(parseFloat(e.target.value))}
+                className="w-full accent-primary h-1 bg-white/10 rounded-full cursor-pointer appearance-none"
+              />
+            </div>
+            <button 
+              onClick={() => setZoom(z => Math.min(5, z + 0.2))}
+              className="w-10 h-10 flex items-center justify-center bg-white/5 border border-white/10 hover:bg-primary/20 hover:border-primary/40 transition-all text-gray-400 hover:text-white"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <button 
+              onClick={onCancel}
+              className="py-4 border border-white/5 bg-black hover:bg-white/5 text-gray-500 text-[10px] font-black uppercase tracking-[0.4em] transition-all"
+            >
+              ABORT
+            </button>
+            <button 
+              onClick={handleReset}
+              className="py-4 border border-white/5 bg-black hover:bg-white/5 text-gray-500 text-[10px] font-black uppercase tracking-[0.4em] transition-all"
+            >
+              RESET
+            </button>
+            <button 
+              onClick={handleApply}
+              className="py-4 bg-primary/10 border border-primary/40 text-primary hover:bg-primary hover:text-white text-[10px] font-black uppercase tracking-[0.4em] transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(239,35,60,0.1)]"
+            >
+              <Crop className="w-4 h-4" /> COMMIT
+            </button>
+          </div>
         </div>
 
-        <div className="flex gap-4 w-full">
-          <button onClick={onCancel} className="flex-1 py-3 border border-white/10 bg-white/5 text-gray-400 text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white/10 transition-all">Cancel</button>
-          <button onClick={handleApply} className="flex-1 py-3 bg-primary text-white text-[10px] font-black uppercase tracking-[0.4em] hover:bg-black hover:text-primary border border-primary transition-all flex items-center justify-center gap-2">
-            <Crop className="w-3.5 h-3.5" /> Apply Crop
-          </button>
-        </div>
+        {/* Hidden img for drawing */}
+        <img 
+          ref={imgRef} 
+          src={imageSrc} 
+          className="hidden" 
+          onLoad={draw} 
+          alt="crop source" 
+          crossOrigin="anonymous" 
+        />
       </motion.div>
     </div>
   );
@@ -921,57 +993,72 @@ const BestWinSettings = ({ token, API_BASE_URL }) => {
         },
         body: JSON.stringify(team)
       });
-      if (res.ok) setStatus("success");
-      else setStatus("error");
-    } catch (e) { setStatus("error"); }
-    finally {
+      if (res.ok) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch (e) {
+      console.error(e);
+      setStatus("error");
+    } finally {
       setSaving(false);
-      setTimeout(() => setStatus("idle"), 2000);
+      setTimeout(() => setStatus("idle"), 3000);
     }
   };
 
   return (
-    <div className="mt-12 p-6 md:p-8 bg-black/40 border border-white/5 rounded-sm relative overflow-hidden group hover:border-primary/20 transition-all">
+    <div className="mt-12 pt-10 border-t border-white/5">
       <div className="flex items-center gap-4 mb-8">
-        <div className="w-1 h-10 bg-primary" />
+        <div className="w-1 h-8 bg-primary shadow-[0_0_15px_rgba(239,35,60,0.5)]" />
         <div>
-          <h3 className="text-xl md:text-2xl font-black italic tracking-tighter uppercase leading-none">
+          <h3 className="text-xl font-black italic tracking-tighter uppercase leading-none">
             Team <span className="text-primary not-italic">Settings</span>
           </h3>
-          <p className="text-[9px] font-black text-gray-700 uppercase tracking-[0.5em] mt-1">
-            Global Team Identity & Best Win Reference
+          <p className="text-[9px] font-black text-gray-600 uppercase tracking-[0.4em] mt-1">
+            Global Tactical Configuration
           </p>
         </div>
       </div>
-
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <div className="space-y-2">
-          <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
-            Best Win Description
-          </label>
-          <input
-            value={team.best_win}
-            placeholder="e.g. 52 Runs against Thunder XI"
-            onChange={e => setTeam({ ...team, best_win: e.target.value })}
-            className="w-full bg-black border border-white/10 py-4 px-5 text-white text-sm font-bold uppercase tracking-widest focus:border-primary/50 outline-none transition-all placeholder:text-gray-900"
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
-            CricHeroes Match URL
-          </label>
-          <div className="relative">
+      
+      <div className="grid md:grid-cols-2 gap-8">
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
+              Best Win Description
+            </label>
             <input
-              value={team.best_win_url}
-              placeholder="https://cricheroes.com/match/..."
-              onChange={e => setTeam({ ...team, best_win_url: e.target.value })}
-              className="w-full bg-black border border-white/10 py-4 px-5 text-white text-xs font-bold focus:border-primary/50 outline-none transition-all placeholder:text-gray-900"
+              value={team.best_win}
+              placeholder="e.g. Defeated Bakery 11 in a thriller"
+              onChange={(e) => setTeam({ ...team, best_win: e.target.value })}
+              className="w-full bg-black border border-white/10 py-4 px-5 text-white text-sm font-bold tracking-widest focus:border-primary/50 outline-none transition-all"
             />
-            {team.best_win_url && (
-              <a href={team.best_win_url} target="_blank" rel="noopener noreferrer" className="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:text-white transition-colors">
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            )}
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <label className="text-[9px] font-black text-gray-700 uppercase tracking-[0.4em]">
+              Best Win URL (CricHeroes)
+            </label>
+            <div className="relative">
+              <input
+                value={team.best_win_url}
+                placeholder="https://cricheroes.com/match-details/..."
+                onChange={(e) => setTeam({ ...team, best_win_url: e.target.value })}
+                className="w-full bg-black border border-white/10 py-4 px-5 text-white text-xs font-bold focus:border-primary/50 outline-none transition-all"
+              />
+              {team.best_win_url && (
+                <a 
+                  href={team.best_win_url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-primary hover:text-white transition-colors"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -979,10 +1066,24 @@ const BestWinSettings = ({ token, API_BASE_URL }) => {
       <button
         onClick={handleSave}
         disabled={saving}
-        className="flex items-center gap-3 px-8 py-4 bg-primary/10 border border-primary/40 text-primary text-[10px] font-black uppercase tracking-[0.4em] hover:bg-primary hover:text-white transition-all disabled:opacity-50"
+        className={`mt-10 px-10 py-4 text-[10px] font-black uppercase tracking-[0.4em] transition-all flex items-center justify-center gap-3 border ${
+          status === "success" 
+            ? "bg-green-500/10 border-green-500 text-green-500" 
+            : status === "error"
+            ? "bg-red-500/10 border-red-500 text-red-500"
+            : "bg-primary border-primary text-white hover:bg-black hover:text-primary"
+        }`}
       >
-        {status === "saving" ? <RefreshCcw className="w-4 h-4 animate-spin" /> : <Trophy className="w-4 h-4" />}
-        {status === "success" ? "Settings Synced" : status === "error" ? "Sync Failed" : "Update Team Settings"}
+        {status === "saving" ? (
+          <RefreshCcw className="w-4 h-4 animate-spin" />
+        ) : status === "success" ? (
+          <Check className="w-4 h-4" />
+        ) : status === "error" ? (
+          <X className="w-4 h-4" />
+        ) : (
+          <Save className="w-4 h-4" />
+        )}
+        {status === "saving" ? "Updating..." : status === "success" ? "System Updated" : status === "error" ? "Update Failed" : "Update Team Settings"}
       </button>
     </div>
   );
@@ -1636,14 +1737,32 @@ const AdminDashboard = () => {
                   <button
                     type="submit"
                     disabled={syncStatus === "syncing"}
-                    className="w-full py-5 bg-primary text-white text-xs font-black uppercase tracking-[0.8em] shadow-[0_0_40px_rgba(239,35,60,0.3)] hover:bg-black hover:text-primary border border-primary transition-all flex items-center justify-center gap-3 group"
+                    className={`w-full py-5 text-xs font-black uppercase tracking-[0.8em] shadow-[0_0_40px_rgba(239,35,60,0.3)] border transition-all flex items-center justify-center gap-3 group ${
+                      syncStatus === "success"
+                        ? "bg-green-500 border-green-500 text-white"
+                        : syncStatus === "error"
+                        ? "bg-red-500 border-red-500 text-white"
+                        : "bg-primary border-primary text-white hover:bg-black hover:text-primary"
+                    }`}
                   >
                     {syncStatus === "syncing" ? (
                       <RefreshCcw className="w-4 h-4 animate-spin" />
+                    ) : syncStatus === "success" ? (
+                      <Check className="w-4 h-4" />
+                    ) : syncStatus === "error" ? (
+                      <X className="w-4 h-4" />
                     ) : (
                       <Zap className="w-4 h-4 group-hover:scale-125 transition-transform" />
                     )}
-                    {editingPlayer ? "Save Changes" : "Add Player"}
+                    {syncStatus === "syncing"
+                      ? "Synchronizing..."
+                      : syncStatus === "success"
+                      ? "Success"
+                      : syncStatus === "error"
+                      ? "Failed"
+                      : editingPlayer
+                      ? "Save Changes"
+                      : "Add Player"}
                   </button>
                 </form>
               </div>

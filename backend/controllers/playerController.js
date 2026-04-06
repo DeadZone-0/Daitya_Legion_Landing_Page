@@ -40,12 +40,15 @@ export const getPlayers = async (req, res) => {
 
 export const createPlayer = async (req, res) => {
   try {
-    const { name, role, matches, runs, wickets, external_id } = req.body;
+    const { name, role, matches, runs, wickets, external_id, titles } = req.body;
     let image_url = "";
 
     if (req.file) {
       image_url = req.file.path;
     }
+
+    // titles might come as an array from titles[] or a string
+    const titlesArray = Array.isArray(titles) ? titles : (titles ? [titles] : []);
 
     const player = new Player({
       name,
@@ -55,6 +58,7 @@ export const createPlayer = async (req, res) => {
       wickets,
       external_id: external_id || `manual-${Date.now()}`,
       image_url,
+      titles: titlesArray,
       is_manual_override: true,
     });
 
@@ -67,7 +71,7 @@ export const createPlayer = async (req, res) => {
 
 export const updatePlayer = async (req, res) => {
   try {
-    const { name, role, matches, runs, wickets } = req.body;
+    const { name, role, matches, runs, wickets, titles, external_id } = req.body;
     const player = await Player.findById(req.params.id);
 
     if (player) {
@@ -76,7 +80,12 @@ export const updatePlayer = async (req, res) => {
       player.matches = matches !== undefined ? matches : player.matches;
       player.runs = runs !== undefined ? runs : player.runs;
       player.wickets = wickets !== undefined ? wickets : player.wickets;
+      player.external_id = external_id || player.external_id;
       player.is_manual_override = true;
+
+      if (titles !== undefined) {
+        player.titles = Array.isArray(titles) ? titles : (titles ? [titles] : []);
+      }
 
       if (req.file) {
         player.image_url = req.file.path;
