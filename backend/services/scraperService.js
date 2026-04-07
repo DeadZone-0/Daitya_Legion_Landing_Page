@@ -297,8 +297,7 @@ export const scrapePlayers = async () => {
 
       const existing = await Player.findOne({ external_id: dbPayload.external_id });
       if (existing && !existing.is_manual_override) {
-        Object.assign(existing, dbPayload);
-        await existing.save();
+        await Player.updateOne({ external_id: dbPayload.external_id }, { $set: dbPayload });
       } else if (!existing) {
         await Player.create({ ...dbPayload, is_manual_override: false });
       }
