@@ -275,7 +275,7 @@ export const scrapePlayers = async () => {
         name: info.name,
         image_url: info.profile_photo || null,
         role: info.playing_role || m.role,
-        titles: (info.badges || []).map(b => b.name) || extras.titles || [],
+        titles: (info.badges && info.badges.length > 0) ? info.badges.map(b => b.name) : (extras.titles || []),
         matches: info.total_matches || 0,
         runs: info.total_runs || 0,
         wickets: info.total_wickets || 0,
@@ -309,6 +309,12 @@ export const scrapePlayers = async () => {
       };
 
       const existing = await Player.findOne({ external_id: dbPayload.external_id });
+      
+      // Inherit existing titles if scraper fails to pull new ones
+      if (existing && existing.titles?.length > 0 && (!dbPayload.titles || dbPayload.titles.length === 0)) {
+        dbPayload.titles = existing.titles;
+      }
+      
       if (existing && !existing.is_manual_override) {
         await Player.updateOne({ external_id: dbPayload.external_id }, { $set: dbPayload });
       } else if (!existing) {
