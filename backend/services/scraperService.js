@@ -201,6 +201,19 @@ async function getTeamMembers(buildId) {
       members.push({ external_id: id, name, image_url: null, role: 'Unknown', slug });
     }
     console.log(`  HTML Result: Found ${members.length} members via regex`);
+    
+    // Explicitly add requested extra players not always found on main squad list
+    const EXTRA_MEMBERS = [
+      { external_id: '21556092', name: 'Paritosh Dhyani', image_url: null, role: 'Unknown', slug: 'Paritosh-Dhyani' },
+      { external_id: '38569177', name: 'Abhideep Gupta', image_url: null, role: 'Unknown', slug: 'Abhideep-Gupta' },
+    ];
+    
+    EXTRA_MEMBERS.forEach(extra => {
+      if (!members.find(m => m.external_id === extra.external_id)) {
+        members.push(extra);
+      }
+    });
+
     return members;
   } catch (e) {
     console.log(`  HTML Fallback failed: ${e.message}`);
