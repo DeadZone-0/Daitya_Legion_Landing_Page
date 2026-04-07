@@ -20,7 +20,7 @@ const ViceCaptainSection = ({ vc }) => {
             transition={{ duration: 0.8 }}
             className="relative flex-shrink-0 group"
           >
-            <div className="absolute -inset-4 bg-green-900/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            <div className="absolute -inset-4 bg-red-900/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative w-[220px] h-[220px] md:w-[400px] md:h-[400px] rounded-sm overflow-hidden border border-white/10 shadow-2xl">
               <img 
                 src={vc.image_url || 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80&w=600'} 
@@ -42,7 +42,7 @@ const ViceCaptainSection = ({ vc }) => {
           <div className="flex-1 space-y-6 md:space-y-10 flex flex-col items-center lg:items-start text-center lg:text-left">
             <div>
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-sm bg-white/5 border border-white/10 mb-6">
-                <div className="w-2 h-2 bg-green-600 animate-pulse" />
+                <div className="w-2 h-2 bg-red-600 animate-pulse" />
                 <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Vice Captain</span>
               </div>
               <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-white leading-none tracking-tighter mb-8 italic uppercase">

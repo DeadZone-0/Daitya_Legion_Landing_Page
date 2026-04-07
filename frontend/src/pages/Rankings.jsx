@@ -138,14 +138,14 @@ const Rankings = () => {
 
   const tabs = [
     { id: "batting", label: "BATTING", icon: Zap, color: "text-primary" },
-    { id: "bowling", label: "BOWLING", icon: Target, color: "text-green-700" },
+    { id: "bowling", label: "BOWLING", icon: Target, color: "text-red-700" },
     {
       id: "allrounder",
       label: "ALL-ROUNDERS",
       icon: Shield,
       color: "text-gray-400",
     },
-    { id: "fielding", label: "FIELDING", icon: Waves, color: "text-green-900" },
+    { id: "fielding", label: "FIELDING", icon: Waves, color: "text-red-900" },
   ];
 
   return (
@@ -155,7 +155,7 @@ const Rankings = () => {
       {/* Cinematic Overlays */}
       <div className="fixed inset-0 pointer-events-none -z-10">
         <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[200px]"></div>
-        <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-green-900/5 rounded-full blur-[180px]"></div>
+        <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-red-900/5 rounded-full blur-[180px]"></div>
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
       </div>
 
@@ -220,17 +220,17 @@ const Rankings = () => {
               </div>
             </div>
           ) : error ? (
-            <div className="flex flex-col items-center justify-center py-40 border border-green-900/20 bg-green-950/5 rounded-sm">
-              <Zap className="w-16 h-16 text-green-900 mb-8 animate-pulse" />
+            <div className="flex flex-col items-center justify-center py-40 border border-red-900/20 bg-red-950/5 rounded-sm">
+              <Zap className="w-16 h-16 text-red-900 mb-8 animate-pulse" />
               <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter mb-4">
                 Encryption Error // 404
               </h3>
-              <p className="text-green-900/60 font-bold uppercase tracking-widest text-[9px]">
+              <p className="text-red-900/60 font-bold uppercase tracking-widest text-[9px]">
                 {error}
               </p>
               <button
                 onClick={() => window.location.reload()}
-                className="mt-8 px-8 py-3 bg-green-950/20 border border-green-900/40 text-white text-[9px] font-black uppercase tracking-[0.3em] hover:bg-green-900/40 transition-all"
+                className="mt-8 px-8 py-3 bg-red-950/20 border border-red-900/40 text-white text-[9px] font-black uppercase tracking-[0.3em] hover:bg-red-900/40 transition-all"
               >
                 Re-establish Link
               </button>
@@ -272,7 +272,7 @@ const Rankings = () => {
                       player={item.p}
                       value={item.score}
                       label="Bowling Rating"
-                      color="text-green-700"
+                      color="text-red-700"
                     />
                   ))}
                 </motion.div>
@@ -326,7 +326,7 @@ const Rankings = () => {
                     ))}
                   </div>
                   <div className="space-y-6">
-                    <div className="flex items-center gap-3 mb-8 border-l-4 border-green-950 pl-6 text-center sm:text-right w-full sm:w-auto justify-end md:text-left md:justify-start">
+                    <div className="flex items-center gap-3 mb-8 border-l-4 border-red-950 pl-6 text-center sm:text-right w-full sm:w-auto justify-end md:text-left md:justify-start">
                       <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter text-center md:text-left">
                         Run Outs <br />
                         <span className="text-[10px] tracking-[0.4em] not-italic text-gray-700 font-black">
@@ -341,7 +341,7 @@ const Rankings = () => {
                         player={p}
                         value={p.run_outs || 0}
                         label="Run Outs"
-                        color="text-green-900"
+                        color="text-red-900"
                       />
                     ))}
                   </div>

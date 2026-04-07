@@ -36,7 +36,7 @@ const MatchRow = ({ match, index }) => {
             </span>
           )}
           {showBowling && (
-            <span className="text-[10px] text-green-500 font-black italic border border-green-900/30 px-2 py-0.5 rounded-sm">
+            <span className="text-[10px] text-red-500 font-black italic border border-red-900/30 px-2 py-0.5 rounded-sm">
               {p.bowling.wickets}/{p.bowling.runs} <span className="text-[8px] not-italic text-gray-800">({p.bowling.overs})</span>
             </span>
           )}
@@ -62,6 +62,14 @@ const MatchRow = ({ match, index }) => {
 
 const PlayerDetailsModal = ({ player, onClose }) => {
   const [activeTab, setActiveTab] = useState('matches');
+  
+  const calculateAge = (dobString) => {
+    if (!dobString) return null;
+    const dob = new Date(dobString);
+    if (isNaN(dob.getTime())) return null;
+    const ageDt = new Date(Date.now() - dob.getTime()); 
+    return Math.abs(ageDt.getUTCFullYear() - 1970);
+  };
   
   const winRate = useMemo(() => {
     if (!player.match_history?.length) return 0;
@@ -110,6 +118,11 @@ const PlayerDetailsModal = ({ player, onClose }) => {
             <div className="flex flex-wrap gap-3 mt-6">
                <span className="px-4 py-1.5 bg-primary/10 border border-primary/30 text-[9px] font-black uppercase text-primary tracking-widest">{player.role}</span>
                <span className="px-4 py-1.5 bg-white/2 border border-white/5 text-[9px] font-black uppercase text-gray-500 tracking-widest">ID: {player.external_id?.slice(-8)}</span>
+               {player.general?.dob && calculateAge(player.general.dob) && (
+                 <span className="px-4 py-1.5 bg-white/2 border border-white/5 text-[9px] font-black uppercase text-gray-500 tracking-widest">
+                   Age: {calculateAge(player.general.dob)}
+                 </span>
+               )}
             </div>
           </div>
 
@@ -128,7 +141,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
              </div>
              <div className="p-5 bg-white/2 border border-white/5 rounded-sm">
                 <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Wickets</span>
-                <span className="text-3xl font-black text-green-800 italic">{player.wickets || 0}</span>
+                <span className="text-3xl font-black text-red-800 italic">{player.wickets || 0}</span>
              </div>
           </div>
         </div>
@@ -158,7 +171,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
                      <h4 className="text-xl sm:text-2xl font-black text-white italic uppercase tracking-tighter">Match History — Last 10</h4>
                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500" />
+                        <div className="w-2 h-2 rounded-full bg-red-500" />
                         <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">Data: Synchronized</span>
                      </div>
                    </div>
@@ -187,7 +200,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
                      </div>
                    </div>
                    <div>
-                     <h4 className="text-xl font-black text-green-800 italic uppercase tracking-widest mb-8 flex items-center gap-4">
+                     <h4 className="text-xl font-black text-red-800 italic uppercase tracking-widest mb-8 flex items-center gap-4">
                         <Target className="w-5 h-5" /> Bowling Stats
                      </h4>
                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-6">
@@ -196,7 +209,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
                           { label: "Wickets", val: player.wickets, icon: Target },
                           { label: "Economy", val: player.bowling?.economy, icon: Activity },
                         ].map((s, i) => (
-                           <div key={i} className="p-4 sm:p-8 bg-[#0a0b10] border border-white/5 group hover:border-green-900/40 transition-all">
+                           <div key={i} className="p-4 sm:p-8 bg-[#0a0b10] border border-white/5 group hover:border-red-900/40 transition-all">
                               <span className="text-[9px] font-black uppercase text-gray-700 tracking-widest block mb-2">{s.label}</span>
                               <span className="text-2xl sm:text-4xl font-black text-white italic uppercase">{s.val}</span>
                            </div>

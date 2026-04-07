@@ -150,14 +150,14 @@ const Home = () => {
             className="group relative block"
           >
             <div className="absolute inset-0 bg-primary/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div className="glass-panel p-6 md:p-8 border-green-500/20 bg-[#0a0b10] flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 relative overflow-hidden text-center lg:text-left group-hover:border-primary/60">
+            <div className="glass-panel p-6 md:p-8 border-red-500/20 bg-[#0a0b10] flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 relative overflow-hidden text-center lg:text-left group-hover:border-primary/60">
               <div className="absolute top-0 right-0 p-4">
                 <Monitor className="w-4 h-4 text-gray-800" />
               </div>
 
               <div className="flex items-center gap-8">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-10"></div>
+                  <div className="absolute inset-0 bg-red-500 rounded-full animate-ping opacity-10"></div>
                   <div className="w-16 h-16 rounded-full border-2 border-primary/40 flex items-center justify-center bg-black relative z-10">
                     <Activity className="w-8 h-8 text-primary" />
                   </div>
@@ -288,15 +288,15 @@ const Home = () => {
                   </span>
                 </div>
               </div>
-              <div className="glass-panel p-6 md:p-10 flex flex-col md:flex-row items-center gap-4 md:gap-8 bg-[#0a0b10] text-center md:text-left border-white/5 group hover:border-green-900/40">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-sm bg-green-950/20 flex items-center justify-center border border-green-900/40 group-hover:scale-105 transition-transform duration-500 shrink-0">
-                  <Target className="text-green-700 w-10 h-10" />
+              <div className="glass-panel p-6 md:p-10 flex flex-col md:flex-row items-center gap-4 md:gap-8 bg-[#0a0b10] text-center md:text-left border-white/5 group hover:border-red-900/40">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-sm bg-red-950/20 flex items-center justify-center border border-red-900/40 group-hover:scale-105 transition-transform duration-500 shrink-0">
+                  <Target className="text-red-700 w-10 h-10" />
                 </div>
                 <div>
                   <h4 className="text-[10px] font-black text-gray-700 uppercase tracking-[0.4em] mb-2">
                     🎯 Top Wicket-Taker
                   </h4>
-                  <p className="text-xl md:text-3xl font-black text-white uppercase italic tracking-tighter group-hover:text-green-700 transition-colors block">
+                  <p className="text-xl md:text-3xl font-black text-white uppercase italic tracking-tighter group-hover:text-red-700 transition-colors block">
                     {teamStats.topWicketer?.name || "---"}
                   </p>
                   <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mt-2">

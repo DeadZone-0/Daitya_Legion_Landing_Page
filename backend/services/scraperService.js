@@ -239,20 +239,9 @@ export const scrapePlayers = async () => {
       let realBestBowling = '0/0';
       let bestWickets = 0;
       let minRuns = 999;
-      let totalBattingRuns = 0;
-      let dismissals = 0;
 
       matchHistory.forEach(mh => {
         const perf = mh.performance;
-        
-        // Batting Average Logic
-        if (perf.batting && perf.batting.how_out && perf.batting.how_out !== 'DNB') {
-          totalBattingRuns += perf.batting.runs;
-          const outStr = perf.batting.how_out.toLowerCase();
-          if (outStr !== 'not out' && outStr !== 'retired hurt') {
-            dismissals++;
-          }
-        }
         
         // High Score
         if (perf.batting.runs > realHighScore) realHighScore = perf.batting.runs;
@@ -266,8 +255,6 @@ export const scrapePlayers = async () => {
           realBestBowling = `${bestWickets}/${minRuns}`;
         }
       });
-      
-      let computedBattingAverage = dismissals > 0 ? Number((totalBattingRuns / dismissals).toFixed(2)) : (totalBattingRuns > 0 ? totalBattingRuns : 0);
 
 
       const dbPayload = {
@@ -285,7 +272,7 @@ export const scrapePlayers = async () => {
         tournaments: extras.tournaments || 0,
         match_history: matchHistory,
         batting: {
-          average: computedBattingAverage > 0 ? computedBattingAverage : (extras.batting_average || 0),
+          average: extras.batting_average || 0,
           strike_rate: extras.strike_rate || 0,
           high_score: realHighScore,
           total_runs: info.total_runs || 0,
