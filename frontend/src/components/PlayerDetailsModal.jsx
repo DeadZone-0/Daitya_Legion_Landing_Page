@@ -36,7 +36,7 @@ const MatchRow = ({ match, index }) => {
             </span>
           )}
           {showBowling && (
-            <span className="text-[10px] text-red-500 font-black italic border border-red-900/30 px-2 py-0.5 rounded-sm">
+            <span className="text-[10px] text-green-500 font-black italic border border-green-900/30 px-2 py-0.5 rounded-sm">
               {p.bowling.wickets}/{p.bowling.runs} <span className="text-[8px] not-italic text-gray-800">({p.bowling.overs})</span>
             </span>
           )}
@@ -128,7 +128,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
              </div>
              <div className="p-5 bg-white/2 border border-white/5 rounded-sm">
                 <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest block mb-2">Wickets</span>
-                <span className="text-3xl font-black text-red-800 italic">{player.wickets || 0}</span>
+                <span className="text-3xl font-black text-green-800 italic">{player.wickets || 0}</span>
              </div>
           </div>
         </div>
@@ -187,7 +187,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
                      </div>
                    </div>
                    <div>
-                     <h4 className="text-xl font-black text-red-800 italic uppercase tracking-widest mb-8 flex items-center gap-4">
+                     <h4 className="text-xl font-black text-green-800 italic uppercase tracking-widest mb-8 flex items-center gap-4">
                         <Target className="w-5 h-5" /> Bowling Stats
                      </h4>
                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-6">
@@ -196,7 +196,7 @@ const PlayerDetailsModal = ({ player, onClose }) => {
                           { label: "Wickets", val: player.wickets, icon: Target },
                           { label: "Economy", val: player.bowling?.economy, icon: Activity },
                         ].map((s, i) => (
-                           <div key={i} className="p-4 sm:p-8 bg-[#0a0b10] border border-white/5 group hover:border-red-900/40 transition-all">
+                           <div key={i} className="p-4 sm:p-8 bg-[#0a0b10] border border-white/5 group hover:border-green-900/40 transition-all">
                               <span className="text-[9px] font-black uppercase text-gray-700 tracking-widest block mb-2">{s.label}</span>
                               <span className="text-2xl sm:text-4xl font-black text-white italic uppercase">{s.val}</span>
                            </div>

@@ -152,13 +152,13 @@ const PlayerCard = ({ player }) => {
               <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">S. Rate</span>
               <span className="text-xl font-black text-white italic tracking-tighter leading-none mt-1">{player.batting?.strike_rate || '0.00' }</span>
             </div>
-            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-red-900/20 transition-colors">
+            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-green-900/20 transition-colors">
               <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Wickets</span>
-              <span className="text-xl font-black text-red-500 italic tracking-tighter flex items-center gap-1 mt-1"><Target className="w-3 h-3 text-red-700"/> {player.wickets || 0}</span>
+              <span className="text-xl font-black text-green-500 italic tracking-tighter flex items-center gap-1 mt-1"><Target className="w-3 h-3 text-green-700"/> {player.wickets || 0}</span>
             </div>
-            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-red-900/20 transition-colors">
+            <div className="flex flex-col bg-white/5 p-3 rounded-sm border border-white/5 hover:border-green-900/20 transition-colors">
               <span className="text-[8px] font-black uppercase text-gray-500 tracking-widest">Economy</span>
-              <span className="text-xl font-black text-red-500 italic tracking-tighter leading-none mt-1">{player.bowling?.economy || '0.00'}</span>
+              <span className="text-xl font-black text-green-500 italic tracking-tighter leading-none mt-1">{player.bowling?.economy || '0.00'}</span>
             </div>
             <div className="flex col-span-2 justify-between items-center bg-white/5 p-3 rounded-sm border border-white/5 mt-[-6px]">
               <span className="text-[8px] sm:text-[9px] font-black uppercase text-gray-500 tracking-widest flex items-center gap-1"><Crosshair className="w-3 h-3 text-gray-500" /> Fielding</span>

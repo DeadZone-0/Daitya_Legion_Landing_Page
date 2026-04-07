@@ -12,7 +12,7 @@ const CaptainSection = ({ captain }) => {
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none opacity-20">
         <div className="absolute top-0 right-0 w-[40%] h-full bg-primary/20 blur-[150px]"></div>
-        <div className="absolute bottom-0 left-0 w-[40%] h-full bg-red-900/10 blur-[150px]"></div>
+        <div className="absolute bottom-0 left-0 w-[40%] h-full bg-green-900/10 blur-[150px]"></div>
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">

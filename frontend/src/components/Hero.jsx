@@ -8,7 +8,7 @@ const Hero = () => {
       {/* Gritty Cinematic Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/20 rounded-full blur-[180px] animate-pulse"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-red-900/10 rounded-full blur-[180px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-green-900/10 rounded-full blur-[180px]"></div>
         
         {/* Grain Overlay */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-30 mix-blend-overlay"></div>
@@ -24,7 +24,7 @@ const Hero = () => {
         >
           <div className="relative inline-block">
              {/* Bat-Signal Glow */}
-            <div className="absolute inset-0 bg-red-600/40 blur-[100px] animate-glow rounded-full scale-150"></div>
+            <div className="absolute inset-0 bg-green-600/40 blur-[100px] animate-glow rounded-full scale-150"></div>
             <motion.img 
               initial={{ scale: 0.5, rotate: -10 }}
               animate={{ scale: 1, rotate: 0 }}
@@ -78,7 +78,7 @@ const Hero = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mt-32 max-w-5xl mx-auto border-t border-white/5 pt-16">
            {[
              { label: "Batting", val: "LETHAL", icon: Zap, color: "text-primary" },
-             { label: "Bowling", val: "PRECISE", icon: Target, color: "text-red-700" },
+             { label: "Bowling", val: "PRECISE", icon: Target, color: "text-green-700" },
              { label: "Fielding", val: "SHARP", icon: Eye, color: "text-gray-500" },
            ].map((item, i) => (
              <motion.div 
