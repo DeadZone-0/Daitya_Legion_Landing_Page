@@ -7,12 +7,12 @@ import Player from '../models/Player.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
-const BLACKLIST_NAMES = ['Aditya Jethuri', 'Aryan Singh', 'Pranjal', 'Pranjal Rawat'];
+const BLACKLIST_NAMES = ['Aditya Jethuri', 'Aryan Singh', 'Pranjal', 'Pranjal Rawat', 'Paritosh Dhyani', 'Abhideep Gupta'];
 
 async function cleanup() {
   try {
     console.log('Connecting to MongoDB...');
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected.');
 
     const result = await Player.deleteMany({
