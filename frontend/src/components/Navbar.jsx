@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, Home } from 'lucide-react';
+import { Trophy, Home, Medal } from 'lucide-react';
 import AudioConsole from './AudioConsole.jsx';
 
 
@@ -29,6 +29,7 @@ const Navbar = () => {
   const navItems = [
     { name: 'Base', path: '/', icon: Home },
     { name: 'Rankings', path: '/rankings', icon: Trophy },
+    { name: 'Tournaments', path: '/tournaments', icon: Medal },
   ];
 
   return (

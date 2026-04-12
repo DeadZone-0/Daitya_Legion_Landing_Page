@@ -331,7 +331,7 @@ export const scrapePlayers = async () => {
   const total_matches = Math.max(...allPlayers.map(p => p.matches || 0), 0);
   const total_runs = allPlayers.reduce((a, p) => a + (p.runs || 0), 0);
   const total_wickets = allPlayers.reduce((a, p) => a + (p.wickets || 0), 0);
-  const total_tournaments = Math.max(...allPlayers.map(p => p.tournaments || 0), 0);
+  const total_tournaments = new Set(allPlayers.flatMap(p => (p.match_history || []).map(m => m.match_type))).size;
 
   let totalWins = 0;
   let totalLogs = 0;

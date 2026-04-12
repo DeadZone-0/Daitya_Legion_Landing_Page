@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Rankings from './pages/Rankings.jsx';
+import Tournaments from './pages/Tournaments.jsx';
 import AdminLogin from './pages/AdminLogin.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import BatarangEffect from './components/BatarangEffect.jsx';
@@ -42,6 +43,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/rankings" element={<Rankings />} />
+                    <Route path="/tournaments" element={<Tournaments />} />
                   </Routes>
                 </div>
               </BatarangEffect>

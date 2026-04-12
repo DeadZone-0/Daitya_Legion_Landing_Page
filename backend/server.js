@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import playerRoutes from "./routes/playerRoutes.js";
 import teamRoutes from "./routes/teamRoutes.js";
 import matchRoutes from "./routes/matchRoutes.js";
+import tournamentRoutes from "./routes/tournamentRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
@@ -33,6 +34,7 @@ app.use("/api/players", playerRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/team", teamRoutes);
 app.use("/api/matches", matchRoutes);
+app.use("/api/tournaments", tournamentRoutes);
 
 // Test Route
 app.get("/", (req, res) => {

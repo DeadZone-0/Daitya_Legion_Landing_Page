@@ -1,14 +1,18 @@
 import { animate, motion } from "framer-motion";
 import {
   Activity,
+  ChevronRight,
   Crosshair,
   ExternalLink,
+  Medal,
   Monitor,
   Shield,
+  Star,
   Target,
   Trophy,
   Zap,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import CaptainSection from "../components/CaptainSection.jsx";
 import Footer from "../components/Footer.jsx";
@@ -307,6 +311,158 @@ const Home = () => {
             </div>
           </motion.div>
         )}
+
+        {/* ── TOURNAMENT TEASER ─────────────────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-40 relative"
+        >
+          <div className="flex items-center justify-between mb-10">
+            <div className="flex items-center gap-3 md:gap-5">
+              <div className="w-1 h-3 md:h-5 bg-primary" />
+              <h3 className="text-xl md:text-3xl font-black text-white italic tracking-tighter uppercase">
+                Tournament <span className="text-primary not-italic">Arena</span>
+              </h3>
+            </div>
+            <Link
+              to="/tournaments"
+              className="hidden md:flex items-center gap-3 text-[9px] font-black uppercase tracking-widest text-gray-600 hover:text-primary transition-colors group"
+            >
+              View All Tournaments
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          {/* RPL Match 1 — Featured Card */}
+          <div className="relative border border-primary/30 bg-gradient-to-br from-primary/5 via-transparent to-transparent overflow-hidden group">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+            <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+            <div className="p-6 md:p-10 lg:p-14 relative z-10">
+              {/* Status + Tournament name */}
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/10 border border-green-500/30 text-green-400 text-[8px] font-black uppercase tracking-widest">
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                  Live Tournament
+                </span>
+                <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest">
+                  Rishikesh Premier League · T20 · 2026
+                </span>
+              </div>
+
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-14">
+                {/* Match info */}
+                <div>
+                  <p className="text-[9px] font-black text-primary uppercase tracking-widest mb-2">
+                    Match 1 — 12 Apr 2026
+                  </p>
+                  <h4 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter leading-none mb-4">
+                    vs Dynamic Devils
+                  </h4>
+                  <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-8">
+                    IDPL Ground, Rishikesh
+                  </p>
+
+                  {/* Score */}
+                  <div className="flex items-center gap-6 p-5 bg-black/40 border border-white/5 mb-6">
+                    <div>
+                      <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest mb-1">Daitya Legion</p>
+                      <p className="text-3xl font-black text-white italic tracking-tighter">164/3</p>
+                      <p className="text-[8px] text-gray-700 font-black mt-0.5">(18.4 Ov)</p>
+                    </div>
+                    <div className="text-gray-800 font-black">VS</div>
+                    <div>
+                      <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest mb-1">Dynamic Devils</p>
+                      <p className="text-3xl font-black text-gray-400 italic tracking-tighter">160/10</p>
+                      <p className="text-[8px] text-gray-700 font-black mt-0.5">(19.2 Ov)</p>
+                    </div>
+                    <div className="ml-auto">
+                      <span className="px-4 py-2 bg-green-500/10 border border-green-500/30 text-green-400 text-[9px] font-black uppercase tracking-widest">
+                        WON · 7 WKT
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Player of Match */}
+                  <div className="flex flex-col sm:flex-row gap-3 mb-6">
+                    <div className="flex-1 flex items-center gap-3 px-5 py-3.5 bg-amber-950/20 border border-amber-800/20">
+                      <Trophy className="w-4 h-4 text-amber-500 flex-shrink-0" />
+                      <div>
+                        <span className="text-[8px] font-black text-amber-700 uppercase tracking-widest block">Player & Bowler of Match</span>
+                        <span className="text-sm font-black text-amber-400 italic uppercase">Maithani Ashraya</span>
+                      </div>
+                    </div>
+                    <div className="flex-1 flex items-center gap-3 px-5 py-3.5 bg-primary/10 border border-primary/20">
+                      <Target className="w-4 h-4 text-primary flex-shrink-0" />
+                      <div>
+                        <span className="text-[8px] font-black text-primary/60 uppercase tracking-widest block">Batsman of Match</span>
+                        <span className="text-sm font-black text-white italic uppercase">Harendra</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Star Performers */}
+                <div>
+                  <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-5 flex items-center gap-2">
+                    <Star className="w-3.5 h-3.5 text-primary" /> 4 Star Performers
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      { name: "Sakshm",          cat: "batting",  perf: "44* (28b) · 6×4 · 1×6" },
+                      { name: "Maithani Ashraya", cat: "bowling",  perf: "3/28 (3 Ov) + 37 runs" },
+                      { name: "Sagar Pathak",     cat: "bowling",  perf: "2/17 (2.2 Ov)" },
+                      { name: "Rohan Rayal",      cat: "bowling",  perf: "2/24 (3 Ov)" },
+                    ].map((sp) => (
+                      <div
+                        key={sp.name}
+                        className={`flex items-center gap-3 p-3.5 border rounded-sm ${
+                          sp.cat === "bowling"
+                            ? "bg-red-950/20 border-red-900/20"
+                            : "bg-primary/5 border-primary/15"
+                        }`}
+                      >
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          sp.cat === "bowling" ? "bg-red-900/30" : "bg-primary/15"
+                        }`}>
+                          {sp.cat === "bowling"
+                            ? <Target className="w-3.5 h-3.5 text-red-500" />
+                            : <Zap className="w-3.5 h-3.5 text-primary" />
+                          }
+                        </div>
+                        <div>
+                          <p className="text-white font-black text-xs uppercase italic tracking-tight">{sp.name}</p>
+                          <p className={`text-[9px] font-bold uppercase tracking-widest mt-0.5 ${
+                            sp.cat === "bowling" ? "text-red-700" : "text-primary/70"
+                          }`}>{sp.perf}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 mt-8">
+                    <a
+                      href="https://cricheroes.com/scorecard/23878814/rishikesh-premier-league-/dynamic-devils-vs-daitya-legion/summary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-5 py-3 border border-primary/30 text-primary text-[9px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                    >
+                      Full Scorecard <ExternalLink className="w-3 h-3" />
+                    </a>
+                    <Link
+                      to="/tournaments"
+                      className="flex items-center gap-2 px-5 py-3 bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                    >
+                      All Tournaments <Medal className="w-3 h-3" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Squad Grid */}
         <div className="flex flex-col items-center mb-12 md:mb-24 text-center px-4">
