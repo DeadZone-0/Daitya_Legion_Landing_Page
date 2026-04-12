@@ -16,15 +16,25 @@ async function fetchText(url) {
   return res.text();
 }
 
-async function fetchJSON(url) {
-  const res = await fetch(url, {
-    headers: { 'User-Agent': USER_AGENT, 'Accept': 'application/json', 'Referer': 'https://cricheroes.com/' }
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.json();
+async function fetchJSON(url, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': USER_AGENT, 'Accept': 'application/json', 'Referer': 'https://cricheroes.com/' }
+      });
+      if (res.status === 404) return null; // Don't retry 404s
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (e) {
+      if (i === retries - 1) throw e;
+      const delay = Math.pow(2, i) * 1000;
+      console.log(`      ⚠️ Retry ${i + 1}/${retries} for ${url} in ${delay}ms...`);
+      await new Promise(r => setTimeout(r, delay));
+    }
+  }
 }
 
-async function getBuildId() {
+export async function getBuildId() {
   const html = await fetchText('https://cricheroes.com/');
   const match = html.match(/"buildId"\s*:\s*"([^"]+)"/);
   if (!match) throw new Error('Could not find buildId');
@@ -55,7 +65,7 @@ function parseStatement(ps) {
   };
 }
 
-async function fetchScorecardPerformance(matchId, playerId, buildId, teamASlug, teamBSlug) {
+export async function fetchScorecardPerformance(matchId, playerId, buildId, teamASlug, teamBSlug) {
   try {
     const slug = `${teamASlug}-vs-${teamBSlug}`.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const url = `https://cricheroes.com/_next/data/${buildId}/scorecard/${matchId}/${slug}/scorecard/scorecard.json?matchId=${matchId}&tournamentName=${slug}&teamNames=scorecard&tab=scorecard`;
@@ -112,13 +122,17 @@ async function fetchScorecardPerformance(matchId, playerId, buildId, teamASlug, 
 async function fetchMatchHistory(playerId, buildId, slug) {
   const allMatches = [];
   try {
-    const url = `https://cricheroes.com/_next/data/${buildId}/player-profile/${playerId}/${slug}/matches.json`;
-    const json = await fetchJSON(url);
-    const firstPage = json?.pageProps?.matches?.data || [];
-    
-    const processMatches = async (matchList) => {
+    let currentPageUrl = `https://cricheroes.com/_next/data/${buildId}/player-profile/${playerId}/${slug}/matches.json`;
+    let pageCount = 1;
+
+    while (currentPageUrl) {
+      const json = await fetchJSON(currentPageUrl);
+      if (!json) break;
+
+      const matches = json?.pageProps?.matches?.data || [];
       const processed = [];
-      for (const m of matchList) {
+
+      for (const m of matches) {
         if (m.match_result === 'Resulted' || m.match_result === 'Drawn') {
           const date = new Date(m.match_start_time).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
           const isDaitya_A = String(m.team_a_id) === DAITYA_TEAM_ID;
@@ -127,9 +141,9 @@ async function fetchMatchHistory(playerId, buildId, slug) {
           const opponent = isDaitya_A ? m.team_b : m.team_a;
           const won = String(m.winning_team_id) === DAITYA_TEAM_ID;
 
-          console.log(`      🏏 Fetching Scorecard for Match ID: ${m.match_id} (vs ${opponent})`);
+          console.log(`      🏏 [Page ${pageCount}] Fetching Scorecard: ${m.match_id} (vs ${opponent})`);
           const performance = await fetchScorecardPerformance(m.match_id, playerId, buildId, m.team_a, m.team_b);
-          await new Promise(r => setTimeout(r, 150)); // Tiny delay
+          await new Promise(r => setTimeout(r, 100)); // Rate limiting safety
 
           processed.push({
             match_id: m.match_id,
@@ -154,13 +168,28 @@ async function fetchMatchHistory(playerId, buildId, slug) {
           });
         }
       }
-      return processed;
-    };
 
-    allMatches.push(...(await processMatches(firstPage)));
-    let nextUrl = json?.pageProps?.matches?.page?.next;
-    if (nextUrl) {
-       console.log(`      ... (Pagination found for ${playerId}, additional pages available)`);
+      allMatches.push(...processed);
+
+      const nextUrl = json?.pageProps?.matches?.page?.next;
+      if (nextUrl) {
+        console.log(`      ➡️ Following pagination to page ${pageCount + 1}...`);
+        // The nextUrl is usually just the query or a path, we need to construct the full _next/data URL
+        // CricHeroes pagination for matches usually looks like /player-profile/ID/slug/matches?page=2
+        // We need to convert it to the JSON path
+        const match = nextUrl.match(/page=(\d+)/);
+        const pageParam = match ? match[1] : null;
+
+        if (pageParam) {
+          currentPageUrl = `https://cricheroes.com/_next/data/${buildId}/player-profile/${playerId}/${slug}/matches.json?playerId=${playerId}&slug=${slug}&page=${pageParam}`;
+          pageCount++;
+        } else {
+          console.log(`      ⚠️ Could not parse page number from: ${nextUrl}`);
+          currentPageUrl = null;
+        }
+      } else {
+        currentPageUrl = null;
+      }
     }
   } catch(e) {
     console.log(`     ⚠️ Match history fetch failed: ${e.message}`);
@@ -219,8 +248,9 @@ async function getTeamMembers(buildId) {
   return [];
 }
 
-export const scrapePlayers = async () => {
-  console.log('🔍 Initializing V2 Deep Stats Scraper with Awards extraction...');
+export const scrapePlayers = async (options = {}) => {
+  const { force = false } = options;
+  console.log(`🔍 Initializing V2 Deep Stats Scraper ${force ? '(FORCE RECONCILE)' : ''} with Awards extraction...`);
   const buildId = await getBuildId();
   console.log(`  Build ID: ${buildId}`);
 
@@ -313,7 +343,7 @@ export const scrapePlayers = async () => {
         dbPayload.titles = existing.titles;
       }
       
-      if (existing && !existing.is_manual_override) {
+      if (existing && (!existing.is_manual_override || force)) {
         await Player.updateOne({ external_id: dbPayload.external_id }, { $set: dbPayload });
       } else if (!existing) {
         await Player.create({ ...dbPayload, is_manual_override: false });
