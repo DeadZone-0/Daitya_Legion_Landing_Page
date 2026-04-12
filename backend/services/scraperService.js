@@ -2,7 +2,7 @@ import Player from '../models/Player.js';
 import Team from '../models/Team.js';
 
 const BLACKLIST_IDS = ['1', '3', '21556092', '38569177'];
-const BLACKLIST_NAMES = ['Vikram Singh', 'Aditya Jethuri', 'Aryan Singh', 'Pranjal', 'Pranjal Rawat', 'Paritosh Dhyani', 'Abhideep Gupta'];
+const BLACKLIST_NAMES = ['Vikram Singh', 'Aditya Jethuri', 'Aryan Singh', 'Pranjal', 'Pranjal Rawat', 'Paritosh Dhyani', 'Abhideep Gupta', 'Ujjwal Sati', 'Vaibhav', 'Piyush', 'Piyush ', 'Armaan Rawat', 'Armaan', 'Arman Rawat', 'Gaurav Kothiyal', 'Himanshu Bisht', 'Saksham'];
 const DAITYA_TEAM_ID = '11183415';
 
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
