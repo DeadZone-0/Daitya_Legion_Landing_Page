@@ -149,7 +149,7 @@ const Rankings = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#050505] pb-32 overflow-hidden selection:bg-primary selection:text-white">
+    <div className="min-h-screen bg-[#050505] pb-32 overflow-x-hidden selection:bg-primary selection:text-white">
       <Navbar />
 
       {/* Cinematic Overlays */}
@@ -173,10 +173,10 @@ const Rankings = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-[10rem] font-black text-white glow-text-primary tracking-tighter leading-none italic uppercase"
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-[10rem] font-black text-white glow-text-primary tracking-tighter leading-none italic uppercase"
           >
             PLAYER{" "}
-            <span className="text-primary not-italic tracking-[0.15em] ml-4 font-black">
+            <span className="text-primary not-italic tracking-[0.1em] sm:tracking-[0.15em] ml-2 sm:ml-4 font-black">
               RANKINGS
             </span>
           </motion.h1>

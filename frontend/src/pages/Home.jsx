@@ -114,7 +114,7 @@ const Home = () => {
   );
 
   return (
-    <div className="relative pb-0 overflow-hidden bg-[#050505] selection:bg-primary selection:text-white">
+    <div className="relative pb-0 overflow-x-hidden bg-[#050505] selection:bg-primary selection:text-white">
       <Navbar />
 
       {/* Cinematic Background Layering */}

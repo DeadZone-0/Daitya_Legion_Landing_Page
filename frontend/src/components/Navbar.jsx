@@ -38,7 +38,7 @@ const Navbar = () => {
         hidden ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
-      <div className="max-w-[1400px] mx-auto flex items-center justify-between glass-panel px-3 sm:px-8 py-2 sm:py-3 bg-black/80 border-white/5 backdrop-blur-3xl shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+      <div className="max-w-[1400px] mx-auto flex items-center justify-between glass-panel px-2 sm:px-8 py-1.5 sm:py-3 bg-black/80 border-white/5 backdrop-blur-3xl shadow-[0_4px_30px_rgba(0,0,0,0.8)] overflow-hidden">
         <Link to="/" className="flex items-center gap-2 sm:gap-4 group">
           <div className="flex-shrink-0 w-9 h-9 sm:w-14 sm:h-14 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
             <img
@@ -67,16 +67,16 @@ const Navbar = () => {
              <span className="text-[6px] font-bold text-primary/40 uppercase tracking-[0.4em] mt-1">Architect: Sagar Pathak</span>
           </div>
 
-          <div className="hidden sm:block mr-2">
+          <div className="hidden md:block mr-2">
             <AudioConsole />
           </div>
 
-          <div className="flex items-center gap-0.5 sm:gap-1">
+          <div className="flex items-center gap-0 sm:gap-1">
             {navItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`relative flex items-center gap-1.5 sm:gap-3 px-3 sm:px-6 py-2 sm:py-2.5 rounded-sm text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all group overflow-hidden ${location.pathname === item.path ? 'text-white' : 'text-gray-500 hover:text-white'}`}
+                className={`relative flex items-center gap-1 sm:gap-3 px-2 sm:px-6 py-2 sm:py-2.5 rounded-sm text-[8px] sm:text-[10px] font-black uppercase tracking-[0.1em] sm:tracking-[0.3em] transition-all group overflow-hidden ${location.pathname === item.path ? 'text-white' : 'text-gray-500 hover:text-white'}`}
               >
                 {location.pathname === item.path && (
                   <motion.div

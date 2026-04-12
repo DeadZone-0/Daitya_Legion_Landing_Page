@@ -224,11 +224,11 @@ const TournamentCard = ({ tournament, index }) => {
     >
       {/* Card Header */}
       <div
-        className="p-6 md:p-10 cursor-pointer select-none"
+        className="p-4 sm:p-6 md:p-10 cursor-pointer select-none"
         onClick={() => setExpanded((e) => !e)}
       >
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-start gap-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-start gap-3 sm:gap-5">
             {/* Type badge */}
             <div className="w-14 h-14 md:w-20 md:h-20 rounded-sm bg-primary/5 border border-primary/10 flex items-center justify-center flex-shrink-0 group-hover:border-primary/30 transition-colors text-2xl md:text-3xl">
               {TYPE_ICON[tournament.type] || "🏆"}
@@ -267,9 +267,9 @@ const TournamentCard = ({ tournament, index }) => {
           </div>
 
           {/* Stats row */}
-          <div className="flex items-center gap-6 md:gap-10 flex-wrap">
+          <div className="flex items-center gap-4 sm:gap-6 md:gap-10 flex-wrap">
             <div className="text-center">
-              <p className="text-3xl md:text-4xl font-black text-white italic tracking-tighter">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-black text-white italic tracking-tighter">
                 {tournament.matches_played}
               </p>
               <p className="text-[8px] font-black text-gray-700 uppercase tracking-widest mt-1">
@@ -277,7 +277,7 @@ const TournamentCard = ({ tournament, index }) => {
               </p>
             </div>
             <div className="text-center">
-              <p className="text-3xl md:text-4xl font-black text-green-400 italic tracking-tighter">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-black text-green-400 italic tracking-tighter">
                 {tournament.wins}
               </p>
               <p className="text-[8px] font-black text-gray-700 uppercase tracking-widest mt-1">
@@ -285,7 +285,7 @@ const TournamentCard = ({ tournament, index }) => {
               </p>
             </div>
             <div className="text-center">
-              <p className="text-3xl md:text-4xl font-black text-red-700 italic tracking-tighter">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-black text-red-700 italic tracking-tighter">
                 {tournament.losses}
               </p>
               <p className="text-[8px] font-black text-gray-700 uppercase tracking-widest mt-1">
@@ -294,7 +294,7 @@ const TournamentCard = ({ tournament, index }) => {
             </div>
             {tournament.matches_played > 0 && (
               <div className="text-center">
-                <p className="text-3xl md:text-4xl font-black text-primary italic tracking-tighter">
+                <p className="text-2xl sm:text-3xl md:text-4xl font-black text-primary italic tracking-tighter">
                   {winRate}%
                 </p>
                 <p className="text-[8px] font-black text-gray-700 uppercase tracking-widest mt-1">
@@ -410,7 +410,7 @@ const Tournaments = () => {
       </div>
 
       {/* Hero Banner */}
-      <div className="pt-28 md:pt-40 pb-16 md:pb-24 px-4 max-w-[1400px] mx-auto">
+      <div className="pt-24 sm:pt-28 md:pt-40 pb-10 sm:pb-16 md:pb-24 px-4 max-w-[1400px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -426,7 +426,7 @@ const Tournaments = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.05 }}
-          className="text-5xl sm:text-7xl md:text-[9rem] lg:text-[11rem] font-black text-white glow-text-primary tracking-tighter leading-none italic uppercase mb-4"
+          className="text-4xl sm:text-6xl md:text-[8rem] lg:text-[11rem] font-black text-white glow-text-primary tracking-tighter leading-none italic uppercase mb-4 break-words"
         >
           TOURNA
           <span className="text-primary not-italic tracking-[0.05em]">MENTS</span>

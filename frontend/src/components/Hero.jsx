@@ -15,7 +15,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 text-center relative z-10">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 text-center relative z-10 w-full">
         <motion.div 
           initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -42,9 +42,9 @@ const Hero = () => {
            animate={{ opacity: 1, scale: 1 }}
            transition={{ delay: 0.3, duration: 0.8 }}
         >
-           <h1 className="text-5xl sm:text-7xl md:text-[14rem] font-black leading-none tracking-tighter mb-6 italic text-white flex flex-col group">
+           <h1 className="text-5xl sm:text-7xl md:text-[14rem] font-black leading-none tracking-tighter mb-6 italic text-white flex flex-col group w-full">
              <span className="glow-text-primary group-hover:tracking-[0.1em] transition-all duration-1000">DAITYA</span>
-             <span className="text-primary not-italic tracking-[0.25em] -mt-2 sm:-mt-6 md:-mt-14 drop-shadow-[0_0_30px_rgba(239,35,60,0.4)]">LEGION</span>
+             <span className="text-primary not-italic tracking-[0.2em] sm:tracking-[0.25em] -mt-2 sm:-mt-6 md:-mt-14 drop-shadow-[0_0_30px_rgba(239,35,60,0.4)]">LEGION</span>
            </h1>
            <div className="flex items-center justify-center gap-4 mb-12">
               <div className="h-px w-12 bg-primary/40"></div>
@@ -61,12 +61,12 @@ const Hero = () => {
           transition={{ delay: 0.6 }}
           className="flex flex-col items-center gap-6 w-full max-w-2xl mx-auto"
         >
-          <div className="flex flex-wrap justify-center gap-6 w-full">
-            <button className="btn-premium px-12 py-6 group relative overflow-hidden flex-1 min-w-[200px]">
+          <div className="flex flex-wrap justify-center gap-4 w-full">
+            <button className="btn-premium px-8 sm:px-12 py-5 sm:py-6 group relative overflow-hidden flex-1 min-w-[150px] sm:min-w-[200px]">
                <span className="relative z-10 text-[11px]"><a href="https://wa.me/918755903705?text=Hello%20Captain%2C%20I%20want%20to%20book%20a%20paid%20match%20with%20Daitya%20Legion." target="_blank" rel="noopener noreferrer">Book Match (Paid)</a></span>
                <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </button>
-            <button className="px-12 py-6 rounded-sm bg-white/5 border border-white/10 hover:border-primary/50 transition-all text-white font-black uppercase text-[11px] tracking-[0.3em] flex-1 min-w-[200px] flex justify-center group">
+            <button className="px-8 sm:px-12 py-5 sm:py-6 rounded-sm bg-white/5 border border-white/10 hover:border-primary/50 transition-all text-white font-black uppercase text-[11px] tracking-[0.3em] flex-1 min-w-[150px] sm:min-w-[200px] flex justify-center group">
                <a href="https://wa.me/918755903705?text=Hello%20Captain%2C%20I%20want%20to%20book%20a%20friendly%20match%20with%20Daitya%20Legion." target="_blank" rel="noopener noreferrer">Book Friendly Match</a>
             </button>
           </div>
