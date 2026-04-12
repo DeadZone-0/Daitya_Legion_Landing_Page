@@ -383,6 +383,7 @@ const TournamentCard = ({ tournament, index }) => {
 const Tournaments = () => {
   const [tournaments, setTournaments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/tournaments`)
@@ -391,7 +392,10 @@ const Tournaments = () => {
         setTournaments(Array.isArray(data) ? data : []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+      });
   }, []);
 
   const totalMatches = tournaments.reduce((a, t) => a + (t.matches_played || 0), 0);
