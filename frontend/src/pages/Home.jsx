@@ -64,19 +64,22 @@ const Counter = ({ value, title, icon: Icon, color }) => {
 const Home = () => {
   const [players, setPlayers] = useState([]);
   const [teamStats, setTeamStats] = useState(null);
+  const [latestTournament, setLatestTournament] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [playersRes, teamRes] = await Promise.all([
+        const [playersRes, teamRes, tournamentRes] = await Promise.all([
           fetch(`${API_BASE_URL}/api/players`),
           fetch(`${API_BASE_URL}/api/team`),
+          fetch(`${API_BASE_URL}/api/tournaments`),
         ]);
 
         const playersRaw = await playersRes.json();
         const playersData = Array.isArray(playersRaw) ? playersRaw : [];
         const teamData = await teamRes.json();
+        const tournamentData = await tournamentRes.json();
 
         const topScorer = [...playersData].sort(
           (a, b) => (b.runs || 0) - (a.runs || 0),
@@ -87,6 +90,9 @@ const Home = () => {
 
         setPlayers(playersData);
         setTeamStats({ ...teamData, topScorer, topWicketer });
+        if (Array.isArray(tournamentData) && tournamentData.length > 0) {
+          setLatestTournament(tournamentData[0]);
+        }
       } catch (error) {
         console.error("Backend connection failure:", error);
       } finally {
@@ -313,156 +319,163 @@ const Home = () => {
         )}
 
         {/* ── TOURNAMENT TEASER ─────────────────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-40 relative"
-        >
-          <div className="flex items-center justify-between mb-10">
-            <div className="flex items-center gap-3 md:gap-5">
-              <div className="w-1 h-3 md:h-5 bg-primary" />
-              <h3 className="text-xl md:text-3xl font-black text-white italic tracking-tighter uppercase">
-                Tournament <span className="text-primary not-italic">Arena</span>
-              </h3>
-            </div>
-            <Link
-              to="/tournaments"
-              className="hidden md:flex items-center gap-3 text-[9px] font-black uppercase tracking-widest text-gray-600 hover:text-primary transition-colors group"
-            >
-              View All Tournaments
-              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-
-          {/* RPL Match 1 — Featured Card */}
-          <div className="relative border border-primary/30 bg-gradient-to-br from-primary/5 via-transparent to-transparent overflow-hidden group">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-primary/50 to-transparent" />
-            <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-
-            <div className="p-6 md:p-10 lg:p-14 relative z-10">
-              {/* Status + Tournament name */}
-              <div className="flex flex-wrap items-center gap-3 mb-6">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/10 border border-green-500/30 text-green-400 text-[8px] font-black uppercase tracking-widest">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                  Live Tournament
-                </span>
-                <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest">
-                  Rishikesh Premier League · T20 · 2026
-                </span>
+        {latestTournament && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-40 relative"
+          >
+            <div className="flex items-center justify-between mb-10">
+              <div className="flex items-center gap-3 md:gap-5">
+                <div className="w-1 h-3 md:h-5 bg-primary" />
+                <h3 className="text-xl md:text-3xl font-black text-white italic tracking-tighter uppercase">
+                  Tournament <span className="text-primary not-italic">Arena</span>
+                </h3>
               </div>
+              <Link
+                to="/tournaments"
+                className="hidden md:flex items-center gap-3 text-[9px] font-black uppercase tracking-widest text-gray-600 hover:text-primary transition-colors group"
+              >
+                View All Tournaments
+                <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
 
-              <div className="grid lg:grid-cols-2 gap-8 lg:gap-14">
-                {/* Match info */}
-                <div>
-                  <p className="text-[9px] font-black text-primary uppercase tracking-widest mb-2">
-                    Match 1 — 12 Apr 2026
-                  </p>
-                  <h4 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter leading-none mb-4">
-                    vs Dynamic Devils
-                  </h4>
-                  <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-8">
-                    IDPL Ground, Rishikesh
-                  </p>
+            {/* Featured Tournament Card */}
+            <div className="relative border border-primary/30 bg-gradient-to-br from-primary/5 via-transparent to-transparent overflow-hidden group">
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-primary/50 to-transparent" />
+              <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
 
-                  {/* Score */}
-                  <div className="flex items-center gap-6 p-5 bg-black/40 border border-white/5 mb-6">
-                    <div>
-                      <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest mb-1">Daitya Legion</p>
-                      <p className="text-3xl font-black text-white italic tracking-tighter">164/3</p>
-                      <p className="text-[8px] text-gray-700 font-black mt-0.5">(18.4 Ov)</p>
-                    </div>
-                    <div className="text-gray-800 font-black">VS</div>
-                    <div>
-                      <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest mb-1">Dynamic Devils</p>
-                      <p className="text-3xl font-black text-gray-400 italic tracking-tighter">160/10</p>
-                      <p className="text-[8px] text-gray-700 font-black mt-0.5">(19.2 Ov)</p>
-                    </div>
-                    <div className="ml-auto">
-                      <span className="px-4 py-2 bg-green-500/10 border border-green-500/30 text-green-400 text-[9px] font-black uppercase tracking-widest">
-                        WON · 7 WKT
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Player of Match */}
-                  <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                    <div className="flex-1 flex items-center gap-3 px-5 py-3.5 bg-amber-950/20 border border-amber-800/20">
-                      <Trophy className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                      <div>
-                        <span className="text-[8px] font-black text-amber-700 uppercase tracking-widest block">Player & Bowler of Match</span>
-                        <span className="text-sm font-black text-amber-400 italic uppercase">Maithani Ashraya</span>
-                      </div>
-                    </div>
-                    <div className="flex-1 flex items-center gap-3 px-5 py-3.5 bg-primary/10 border border-primary/20">
-                      <Target className="w-4 h-4 text-primary flex-shrink-0" />
-                      <div>
-                        <span className="text-[8px] font-black text-primary/60 uppercase tracking-widest block">Batsman of Match</span>
-                        <span className="text-sm font-black text-white italic uppercase">Harendra</span>
-                      </div>
-                    </div>
-                  </div>
+              <div className="p-6 md:p-10 lg:p-14 relative z-10">
+                {/* Status + Tournament name */}
+                <div className="flex flex-wrap items-center gap-3 mb-6">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-500/10 border border-green-500/30 text-green-400 text-[8px] font-black uppercase tracking-widest">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    {latestTournament.status === 'ongoing' ? 'Ongoing Tournament' : 'Recent Tournament'}
+                  </span>
+                  <span className="text-[9px] font-black text-gray-600 uppercase tracking-widest">
+                    {latestTournament.name} · {latestTournament.type} · {latestTournament.year}
+                  </span>
                 </div>
 
-                {/* Star Performers */}
-                <div>
-                  <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-5 flex items-center gap-2">
-                    <Star className="w-3.5 h-3.5 text-primary" /> 4 Star Performers
-                  </p>
-                  <div className="space-y-3">
-                    {[
-                      { name: "Sakshm",          cat: "batting",  perf: "44* (28b) · 6×4 · 1×6" },
-                      { name: "Maithani Ashraya", cat: "bowling",  perf: "3/28 (3 Ov) + 37 runs" },
-                      { name: "Sagar Pathak",     cat: "bowling",  perf: "2/17 (2.2 Ov)" },
-                      { name: "Rohan Rayal",      cat: "bowling",  perf: "2/24 (3 Ov)" },
-                    ].map((sp) => (
-                      <div
-                        key={sp.name}
-                        className={`flex items-center gap-3 p-3.5 border rounded-sm ${
-                          sp.cat === "bowling"
-                            ? "bg-red-950/20 border-red-900/20"
-                            : "bg-primary/5 border-primary/15"
-                        }`}
-                      >
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          sp.cat === "bowling" ? "bg-red-900/30" : "bg-primary/15"
-                        }`}>
-                          {sp.cat === "bowling"
-                            ? <Target className="w-3.5 h-3.5 text-red-500" />
-                            : <Zap className="w-3.5 h-3.5 text-primary" />
-                          }
-                        </div>
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-14">
+                  {/* Match info */}
+                  {latestTournament.matches?.length > 0 ? (
+                    (() => {
+                      const match = latestTournament.matches[latestTournament.matches.length - 1]; // Get latest match
+                      return (
                         <div>
-                          <p className="text-white font-black text-xs uppercase italic tracking-tight">{sp.name}</p>
-                          <p className={`text-[9px] font-bold uppercase tracking-widest mt-0.5 ${
-                            sp.cat === "bowling" ? "text-red-700" : "text-primary/70"
-                          }`}>{sp.perf}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                          <p className="text-[9px] font-black text-primary uppercase tracking-widest mb-2">
+                             LATEST BATTLE · {match.date}
+                          </p>
+                          <h4 className="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter leading-none mb-4">
+                            vs {match.opponent}
+                          </h4>
+                          <p className="text-[9px] text-gray-600 font-bold uppercase tracking-widest mb-8">
+                            {match.ground}, {match.city}
+                          </p>
 
-                  <div className="flex flex-col sm:flex-row gap-3 mt-8">
-                    <a
-                      href="https://cricheroes.com/scorecard/23878814/rishikesh-premier-league-/dynamic-devils-vs-daitya-legion/summary"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-3 border border-primary/30 text-primary text-[9px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
-                    >
-                      Full Scorecard <ExternalLink className="w-3 h-3" />
-                    </a>
-                    <Link
-                      to="/tournaments"
-                      className="flex items-center gap-2 px-5 py-3 bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
-                    >
-                      All Tournaments <Medal className="w-3 h-3" />
-                    </Link>
+                          {/* Score */}
+                          <div className="flex items-center gap-6 p-5 bg-black/40 border border-white/5 mb-6">
+                            <div>
+                              <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest mb-1">Daitya Legion</p>
+                              <p className="text-3xl font-black text-white italic tracking-tighter">{match.our_score || match.my_score}</p>
+                              <p className="text-[8px] text-gray-700 font-black mt-0.5">({match.our_overs || match.my_overs} Ov)</p>
+                            </div>
+                            <div className="text-gray-800 font-black">VS</div>
+                            <div>
+                              <p className="text-[8px] text-gray-700 font-black uppercase tracking-widest mb-1">{match.opponent}</p>
+                              <p className="text-3xl font-black text-gray-400 italic tracking-tighter">{match.opp_score}</p>
+                              <p className="text-[8px] text-gray-700 font-black mt-0.5">({match.opp_overs} Ov)</p>
+                            </div>
+                            <div className="ml-auto">
+                              <span className={`px-4 py-2 border text-[9px] font-black uppercase tracking-widest ${
+                                match.result?.toLowerCase().includes('won') ? 'bg-green-500/10 border-green-500/30 text-green-400' : 'bg-red-500/10 border-red-500/30 text-red-500'
+                              }`}>
+                                {match.result?.toUpperCase()}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Highlights */}
+                          {match.highlights && (
+                            <p className="text-[10px] text-gray-400 font-bold leading-relaxed border-l-2 border-primary/30 pl-3 italic mb-8 max-w-md">
+                              "{match.highlights}"
+                            </p>
+                          )}
+
+                          <div className="flex flex-wrap gap-3">
+                            {match.cricheroes_url && (
+                              <a
+                                href={match.cricheroes_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-5 py-3 border border-primary/30 text-primary text-[9px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                              >
+                                Full Scorecard <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
+                            <Link
+                              to="/tournaments"
+                              className="flex items-center gap-2 px-5 py-3 bg-primary/10 border border-primary/20 text-primary text-[9px] font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all"
+                            >
+                              Tournament History <Medal className="w-3 h-3" />
+                            </Link>
+                          </div>
+                        </div>
+                      );
+                    })()
+                  ) : (
+                    <div className="flex flex-col items-center justify-center p-10 border border-white/5 bg-black/20">
+                      <Trophy className="w-12 h-12 text-gray-800 mb-4" />
+                      <p className="text-gray-600 font-black uppercase tracking-widest text-[9px]">
+                        No match records found for this tournament
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Star Performers Grid */}
+                  <div>
+                    <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-5 flex items-center gap-2">
+                       Stats & Performances
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-5 bg-white/2 border border-white/5">
+                        <p className="text-[8px] font-black text-gray-700 uppercase tracking-widest mb-1">Matches</p>
+                        <p className="text-2xl font-black text-white italic">{latestTournament.matches_played}</p>
+                      </div>
+                      <div className="p-5 bg-green-500/5 border border-green-500/10">
+                        <p className="text-[8px] font-black text-green-900 uppercase tracking-widest mb-1">Wins</p>
+                        <p className="text-2xl font-black text-green-400 italic">{latestTournament.wins}</p>
+                      </div>
+                      <div className="p-5 bg-red-500/5 border border-red-500/10">
+                        <p className="text-[8px] font-black text-red-900 uppercase tracking-widest mb-1">Losses</p>
+                        <p className="text-2xl font-black text-red-700 italic">{latestTournament.losses}</p>
+                      </div>
+                      <div className="p-5 bg-primary/5 border border-primary/10">
+                        <p className="text-[8px] font-black text-primary/60 uppercase tracking-widest mb-1">Rank/Result</p>
+                        <p className="text-xl font-black text-primary italic uppercase truncate">{latestTournament.result || 'TBD'}</p>
+                      </div>
+                    </div>
+
+                    {latestTournament.cricheroes_url && (
+                      <a
+                        href={latestTournament.cricheroes_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-6 flex items-center gap-3 p-4 bg-black/40 border border-white/5 text-[9px] font-black text-gray-500 uppercase tracking-widest hover:text-primary hover:border-primary/20 transition-all group"
+                      >
+                         View Full Tournament on CricHeroes
+                        <ExternalLink className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
 
         {/* Squad Grid */}
         <div className="flex flex-col items-center mb-12 md:mb-24 text-center px-4">
