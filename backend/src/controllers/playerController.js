@@ -12,7 +12,7 @@ export const getPlayers = async (req, res) => {
 
     if (!players || players.length === 0) {
       console.log("No players found in DB, using JSON fallback");
-      const dataPath = path.join(__dirname, "../data/players.json");
+      const dataPath = path.join(__dirname, "../../data/players.json");
       const rawData = fs.readFileSync(dataPath, "utf-8");
       const jsonPlayers = JSON.parse(rawData);
 

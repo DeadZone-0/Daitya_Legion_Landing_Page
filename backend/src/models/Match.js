@@ -22,24 +22,52 @@ const playerPerformanceSchema = new mongoose.Schema({
   mvp_points: { type: Number, default: 0, min: 0, max: 10 },
 }, { _id: false });
 
+const partnershipSchema = new mongoose.Schema({
+  batsmen: [String],
+  runs: { type: Number, default: 0 },
+  balls: { type: Number, default: 0 },
+  inning: { type: Number, default: 1 }
+}, { _id: false });
+
+const fowSchema = new mongoose.Schema({
+  wicket_no: { type: Number },
+  score: { type: String },
+  over: { type: String },
+  player: { type: String },
+  inning: { type: Number, default: 1 }
+}, { _id: false });
+
 const matchSchema = new mongoose.Schema({
+  match_id: { type: String, unique: true, sparse: true }, // CricHeroes Match ID
   date: { type: String, required: true },
   opponent: { type: String, required: true },
   ground: { type: String, default: '' },
   city: { type: String, default: '' },
   match_type: { type: String, default: 'T20' },
+  ball_type: { type: String, default: 'Leather' },
+  
   // Scores
-  our_score: { type: String, default: '' },   // e.g. "142/6"
-  opp_score: { type: String, default: '' },   // e.g. "138/9"
-  our_overs: { type: String, default: '' },   // e.g. "20"
-  opp_overs: { type: String, default: '' },   // e.g. "20"
-  toss: { type: String, default: '' },         // e.g. "Daitya Legion won the toss and elected to bat"
-  result: { type: String, enum: ['won', 'lost', 'no_result'], required: true },
+  our_score: { type: String, default: '' },
+  opp_score: { type: String, default: '' },
+  our_overs: { type: String, default: '' },
+  opp_overs: { type: String, default: '' },
+  toss: { type: String, default: '' },
+  result: { type: String, required: true }, // e.g., "won by 7 wickets"
+  result_status: { type: String, enum: ['won', 'lost', 'no_result', 'drawn'], required: true },
+
+  // Pro Data
+  partnerships: [partnershipSchema],
+  fall_of_wicket: [fowSchema],
+  power_plays: [mongoose.Schema.Types.Mixed],
+  
   // Post-match analysis
-  insights: { type: String, default: '' },     // "What we should have done differently..."
-  highlights: { type: String, default: '' },   // "Key moments / what went well"
-  // CricHeroes
+  insights: { type: String, default: '' },
+  highlights: { type: String, default: '' },
+  
+  // CricHeroes Meta
   cricheroes_url: { type: String, default: '' },
+  raw_data: { type: mongoose.Schema.Types.Mixed }, // Store the original JSON snapshot
+  
   // Per-player data
   player_performances: [playerPerformanceSchema],
 }, { timestamps: true });
